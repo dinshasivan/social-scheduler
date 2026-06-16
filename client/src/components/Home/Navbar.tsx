@@ -5,35 +5,75 @@ export default function Navbar() {
     const { user } = { user: false };
 
     return (
-        <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-lg border-b border-slate-100">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
-                <Link to="/" onClick={() => scrollTo(0, 0)} className="flex items-center gap-2 ">
-                    <img src="/logo.svg" alt="logo" className="size-7" />
-                    <span className="text-xl lg:text-2xl font-medium font-serif text-slate-800">Scheduler</span>
+        <nav className="sticky top-0 z-50 bg-white/80 backdrop-blur-xl border-b border-slate-200">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 flex items-center justify-between">
+                {/* Logo */}
+                <Link
+                    to="/"
+                    onClick={() => scrollTo(0, 0)}
+                    className="flex items-center gap-3"
+                >
+                    <div className="flex items-center justify-center size-10 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 shadow-md">
+                        <img
+                            src="/logo.svg"
+                            alt="logo"
+                            className="size-5"
+                        />
+                    </div>
+
+                    <span className="text-xl lg:text-2xl font-bold text-slate-900">
+                        Scheduler
+                    </span>
                 </Link>
-                <div className="hidden md:flex items-center gap-8 text-sm text-slate-500">
-                    <a href="#features" className="hover:text-slate-900">
+
+                {/* Navigation */}
+                <div className="hidden md:flex items-center gap-8 text-sm font-medium">
+                    <a
+                        href="#features"
+                        className="text-slate-500 transition-colors hover:text-blue-600"
+                    >
                         Features
                     </a>
-                    <a href="#how-it-works" className="hover:text-slate-900">
-                        How it works
+
+                    <a
+                        href="#how-it-works"
+                        className="text-slate-500 transition-colors hover:text-blue-600"
+                    >
+                        How It Works
                     </a>
-                    <a href="#pricing" className="hover:text-slate-900">
+
+                    <a
+                        href="#pricing"
+                        className="text-slate-500 transition-colors hover:text-blue-600"
+                    >
                         Pricing
                     </a>
                 </div>
 
+                {/* Actions */}
                 {user ? (
-                    <Link to="/dashboard" className="flex items-center gap-1.5 text-sm font-medium bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full shadow-sm hover:shadow-red-200 hover:shadow-md">
-                        Go to Dashboard <ArrowRightIcon className="size-3.5" />
+                    <Link
+                        to="/dashboard"
+                        className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/20"
+                    >
+                        Go to Dashboard
+                        <ArrowRightIcon className="size-4" />
                     </Link>
                 ) : (
                     <div className="flex items-center gap-3">
-                        <Link to="/login" className="text-sm text-slate-600 hover:text-slate-900 hidden sm:block">
+                        <Link
+                            to="/login"
+                            className="hidden sm:block text-sm font-medium text-slate-600 transition-colors hover:text-slate-900"
+                        >
                             Sign In
                         </Link>
-                        <Link to="/login" className="flex items-center gap-1.5 text-sm bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-full shadow-sm hover:shadow-red-200 hover:shadow-md">
-                            Get Started <ArrowRightIcon className="size-3.5" />
+
+                        <Link
+                            to="/login"
+                            className="inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition-all hover:bg-blue-700 hover:shadow-lg hover:shadow-blue-500/20"
+                        >
+                            Get Started
+                            <ArrowRightIcon className="size-4" />
                         </Link>
                     </div>
                 )}

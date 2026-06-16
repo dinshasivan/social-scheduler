@@ -1,57 +1,95 @@
-import React, { useState } from 'react'
-import Sidebar from './Sidebar'
-import { Outlet, useLocation } from 'react-router'
-import { MenuIcon } from 'lucide-react'
+import React, { useState } from "react";
+import Sidebar from "./Sidebar";
+import { Outlet, useLocation } from "react-router";
+import {
+  MenuIcon,
+  BellIcon,
+  SearchIcon,
+} from "lucide-react";
 
 const pageTitle: Record<string, string> = {
-    '/dashboard': 'Dashboard',
-    '/accounts': 'Accounts',
-    '/scheduler': 'Scheduler',
-    '/ai-composer': 'AI Composer'
-}
+  "/dashboard": "Dashboard",
+  "/accounts": "Accounts",
+  "/scheduler": "Scheduler",
+  "/ai-composer": "AI Composer",
+};
 
 const Layout = () => {
+  const location = useLocation();
+  const title = pageTitle[location.pathname];
 
-    const locacation = useLocation()
-    const title = pageTitle[locacation.pathname]
+  const [isMobileMenuOpen, setMobileMenuOpen] =
+    useState(false);
 
-    const [isMobileMenuOpen, setMobileMenuOpen] = useState(false)
-    return (
-        <div className='flex h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 overflow-hidden'>
+  return (
+    <div className="flex h-screen bg-slate-50 overflow-hidden">
+      {/* Mobile Overlay */}
+      {isMobileMenuOpen && (
+        <div
+          className="fixed inset-0 z-40 bg-slate-950/60 backdrop-blur-sm md:hidden"
+          onClick={() => setMobileMenuOpen(false)}
+        />
+      )}
 
-            {/* mobile overlay */}
-            {isMobileMenuOpen && <div className='fixed inset-0 bg-slate-900/50 md:hidden z-40'
-                onClick={() => setMobileMenuOpen(false)} />}
+      <Sidebar
+        isOpen={isMobileMenuOpen}
+        setIsOpen={setMobileMenuOpen}
+      />
 
-            <Sidebar isOpen={isMobileMenuOpen} setIsOpen={setMobileMenuOpen} />
+      <div className="flex flex-1 flex-col overflow-hidden">
+        {/* Top Navigation */}
+        <header className="h-20 bg-white border-b border-slate-200 px-4 sm:px-6 lg:px-8 flex items-center justify-between shadow-sm">
+          <div className="flex items-center gap-4">
+            {/* Mobile Menu */}
+            <button
+              className="md:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition"
+              onClick={() => setMobileMenuOpen(true)}
+            >
+              <MenuIcon className="size-6" />
+            </button>
 
-            <div className='flex-1 flex flex-col overflow-hidden'>
-                {/* top nav */}
-                <header className='h-20 bg-white/80 backdrop-blur-md border-b border-slate-200 flex items-center justify-between px-4 sm:px-6 lg:px-8 shadow-sm'>
+            {/* Page Title */}
+            <div>
+              <h1 className="text-2xl font-bold text-slate-900">
+                {title}
+              </h1>
 
-                    <button
-                        className='md:hidden p-2 rounded-xl text-slate-600 hover:bg-slate-100 transition-colors'
-                        onClick={() => setMobileMenuOpen(true)}
-                    >
-                    </button>
-                    <div className='flex flex-col'>
-                        <h1 className='text-2xl font-bold text-slate-800 tracking-tight'>
-                            {title}
-                        </h1>
-
-                        <p className='text-sm text-slate-500 hidden sm:block'>
-                            Manage and automate your social media presence
-                        </p>
-                    </div>
-                </header>
-                <main className='flex overflow-auto p-4 sm:p-6 md:p-8 xl:p-12'>
-                    <Outlet />
-                </main>
-
+              <p className="hidden sm:block text-sm text-slate-500">
+                Manage and automate your social media presence
+              </p>
             </div>
+          </div>
 
-        </div>
-    )
-}
+          {/* Right Actions */}
+          <div className="flex items-center gap-3">
+            {/* Search */}
+            <button className="hidden md:flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 text-slate-500 hover:bg-slate-50 transition">
+              <SearchIcon className="size-5" />
+            </button>
 
-export default Layout
+            {/* Notifications */}
+            <button className="relative h-10 w-10 flex items-center justify-center rounded-xl border border-slate-200 text-slate-500 hover:bg-slate-50 transition">
+              <BellIcon className="size-5" />
+
+              <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-blue-500" />
+            </button>
+
+            {/* User Avatar */}
+            <div className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 flex items-center justify-center text-white font-semibold shadow-md">
+              D
+            </div>
+          </div>
+        </header>
+
+        {/* Main Content */}
+        <main className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8 bg-slate-50">
+          <div className="mx-auto max-w-7xl">
+            <Outlet />
+          </div>
+        </main>
+      </div>
+    </div>
+  );
+};
+
+export default Layout;
