@@ -46,7 +46,8 @@ const Accounts = () => {
   return (
     <div className="space-y-8 w-full">
       {/* Hero Header */}
-      <div className="rounded-3xl bg-gradient-to-r from-slate-900 via-slate-800 to-blue-700 p-4 text-white shadow-xl">
+      <div className="rounded-3xl bg-gradient-to-r from-slate-900 via-slate-800 to-blue-700 p-4 text-white shadow-xl"
+              style={{ background: "linear-gradient(135deg, #0f1e3d 0%, #1e3a7a 50%, #3b72d9 100%)" }}>
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           <div>
             <h1 className="text-2xl font-bold">

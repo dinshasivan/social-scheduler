@@ -238,6 +238,7 @@ const Scheduler = () => {
               type="submit"
               disabled={loading}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 rounded-2xl flex items-center justify-center gap-2 font-semibold"
+                   style={{ background: "linear-gradient(135deg, #1e3a7a 0%, #3b72d9 100%)" }}
             >
               {loading ? (
                 "Scheduling..."
