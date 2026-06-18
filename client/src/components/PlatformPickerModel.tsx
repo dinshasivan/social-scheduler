@@ -1,8 +1,4 @@
-import {
-  CheckCircleIcon,
-  ExternalLinkIcon,
-  XIcon,
-} from "lucide-react";
+import { CheckCircleIcon, ExternalLinkIcon, XIcon } from "lucide-react";
 import { PLATFORMS } from "../assets/assets";
 
 interface PlatformPickerModelProps {
@@ -19,30 +15,56 @@ const PlatformPickerModel = ({
   onConnect,
 }: PlatformPickerModelProps) => {
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
-      <div className="w-full max-w-lg overflow-hidden rounded-3xl bg-white shadow-2xl border border-slate-200 animate-in fade-in zoom-in-95 duration-200">
-        
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 backdrop-blur-md animate-in fade-in duration-200"
+      style={{ backgroundColor: "rgba(10, 18, 40, 0.72)" }}
+    >
+      <div
+        className="w-full max-w-lg overflow-hidden rounded-2xl bg-white animate-in fade-in zoom-in-95 duration-200"
+        style={{ boxShadow: "0 24px 64px rgba(30, 58, 122, 0.18)", border: "1.5px solid #dce6f9" }}
+      >
+
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-slate-100 px-6 py-5">
-          <div>
-            <h3 className="text-lg font-semibold text-slate-900">
-              Connect Platform
-            </h3>
-            <p className="text-sm text-slate-500 mt-1">
-              Choose a social media platform to connect
-            </p>
+        <div
+          className="flex items-center justify-between px-6 py-5 border-b"
+          style={{ background: "linear-gradient(135deg, #f0f5ff 0%, #e8f0fe 100%)", borderColor: "#dce6f9" }}
+        >
+          <div className="flex items-center gap-3">
+            <div
+              className="w-8 h-8 rounded-lg flex items-center justify-center"
+              style={{ backgroundColor: "#1e3a7a" }}
+            >
+              <ExternalLinkIcon className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <h3 className="text-base font-medium" style={{ color: "#0f1e3d" }}>
+                Connect Platform
+              </h3>
+              <p className="text-xs mt-0.5" style={{ color: "#8fa0bf" }}>
+                Choose a social media platform to connect
+              </p>
+            </div>
           </div>
 
           <button
             onClick={onClose}
-            className="flex h-10 w-10 items-center justify-center rounded-xl text-slate-500 transition-all hover:bg-slate-100 hover:text-slate-700"
+            className="w-8 h-8 rounded-full flex items-center justify-center border transition-all"
+            style={{ borderColor: "#c5d0e8", color: "#8fa0bf", backgroundColor: "transparent" }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.backgroundColor = "#eef2fb";
+              e.currentTarget.style.color = "#3b72d9";
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.backgroundColor = "transparent";
+              e.currentTarget.style.color = "#8fa0bf";
+            }}
           >
-            <XIcon className="size-5" />
+            <XIcon className="w-3.5 h-3.5" />
           </button>
         </div>
 
         {/* Platform List */}
-        <div className="p-5 space-y-3 max-h-[500px] overflow-y-auto">
+        <div className="p-5 space-y-2.5 max-h-[460px] overflow-y-auto">
           {PLATFORMS.map((platform) => {
             const isConnected = connectedIds.includes(platform.id);
             const isConnecting = connecting === platform.id;
@@ -52,70 +74,92 @@ const PlatformPickerModel = ({
                 key={platform.id}
                 disabled={isConnected || isConnecting}
                 onClick={() => onConnect(platform.id)}
-                className={`group flex w-full items-center gap-4 rounded-2xl border p-4 text-left transition-all duration-200
-                  
-                  ${
-                    isConnected
-                      ? "border-emerald-200 bg-emerald-50"
-                      : "border-slate-200 bg-white hover:border-blue-300 hover:bg-blue-50/50 hover:shadow-md"
+                className="group relative w-full flex items-center gap-4 rounded-xl border p-4 text-left transition-all duration-200 overflow-hidden"
+                style={
+                  isConnected
+                    ? { backgroundColor: "#eafaf3", borderColor: "#9fe1cb", opacity: 1 }
+                    : isConnecting
+                    ? { backgroundColor: "#f5f8ff", borderColor: "#3b72d9", opacity: 0.75 }
+                    : { backgroundColor: "#ffffff", borderColor: "#e4eaf6" }
+                }
+                onMouseEnter={(e) => {
+                  if (!isConnected && !isConnecting) {
+                    e.currentTarget.style.borderColor = "#3b72d9";
+                    e.currentTarget.style.backgroundColor = "#f5f8ff";
+                    e.currentTarget.style.boxShadow = "0 4px 16px rgba(59,114,217,0.10)";
                   }
-
-                  ${isConnecting && "opacity-70"}
-                `}
+                }}
+                onMouseLeave={(e) => {
+                  if (!isConnected && !isConnecting) {
+                    e.currentTarget.style.borderColor = "#e4eaf6";
+                    e.currentTarget.style.backgroundColor = "#ffffff";
+                    e.currentTarget.style.boxShadow = "none";
+                  }
+                }}
               >
-                {/* Platform Icon */}
+                {/* Hover accent bar */}
+                {!isConnected && !isConnecting && (
+                  <div
+                    className="absolute top-0 left-0 right-0 h-0.5 opacity-0 group-hover:opacity-100 transition-opacity"
+                    style={{ background: "linear-gradient(90deg, #1e3a7a 0%, #3b72d9 100%)" }}
+                  />
+                )}
+
+                {/* Platform icon */}
                 <div
-                  className={`flex h-12 w-12 items-center justify-center rounded-2xl
-                    ${
-                      isConnected
-                        ? "bg-emerald-100"
-                        : "bg-slate-100 group-hover:bg-blue-100"
-                    }
-                  `}
+                  className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-colors"
+                  style={
+                    isConnected
+                      ? { backgroundColor: "#d1f5e8", border: "1.5px solid #9fe1cb" }
+                      : { backgroundColor: "#eef2fb", border: "1.5px solid #dce6f9" }
+                  }
                 >
                   <platform.icon
-                    className={`size-6
-                      ${
-                        isConnected
-                          ? "text-emerald-600"
-                          : "text-slate-600 group-hover:text-blue-600"
-                      }
-                    `}
+                    className="w-5 h-5"
+                    style={{ color: isConnected ? "#0f6e56" : "#3b72d9" }}
                   />
                 </div>
 
-                {/* Content */}
+                {/* Name + description */}
                 <div className="flex-1 min-w-0">
                   <h4
-                    className={`font-medium
-                      ${
-                        isConnected
-                          ? "text-emerald-700"
-                          : "text-slate-900"
-                      }
-                    `}
+                    className="text-sm font-medium"
+                    style={{ color: isConnected ? "#0f6e56" : "#0f1e3d" }}
                   >
                     {platform.name}
                   </h4>
-
-                  <p className="mt-1 text-sm text-slate-500 truncate">
-                    {isConnected
-                      ? "Platform already connected"
-                      : platform.description}
+                  <p className="text-xs mt-0.5 truncate" style={{ color: "#8fa0bf" }}>
+                    {isConnected ? "Already connected to this platform" : platform.description}
                   </p>
                 </div>
 
-                {/* Status Icons */}
+                {/* Right status indicator */}
                 {isConnected && (
-                  <CheckCircleIcon className="size-5 shrink-0 text-emerald-500" />
+                  <div
+                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-full shrink-0"
+                    style={{ backgroundColor: "#eafaf3", border: "1px solid #9fe1cb" }}
+                  >
+                    <CheckCircleIcon className="w-3.5 h-3.5" style={{ color: "#0f6e56" }} />
+                    <span className="text-xs font-semibold" style={{ color: "#0f6e56" }}>
+                      Connected
+                    </span>
+                  </div>
                 )}
 
                 {isConnecting && (
-                  <div className="h-5 w-5 shrink-0 rounded-full border-2 border-blue-600 border-t-transparent animate-spin" />
+                  <div
+                    className="w-5 h-5 rounded-full border-2 border-t-transparent animate-spin shrink-0"
+                    style={{ borderColor: "#3b72d9", borderTopColor: "transparent" }}
+                  />
                 )}
 
                 {!isConnected && !isConnecting && (
-                  <ExternalLinkIcon className="size-4 shrink-0 text-slate-400 transition-colors group-hover:text-blue-600" />
+                  <div
+                    className="w-7 h-7 rounded-lg flex items-center justify-center border shrink-0 transition-all group-hover:border-blue-300"
+                    style={{ borderColor: "#e4eaf6", backgroundColor: "#f5f8ff" }}
+                  >
+                    <ExternalLinkIcon className="w-3.5 h-3.5" style={{ color: "#8fa0bf" }} />
+                  </div>
                 )}
               </button>
             );
@@ -123,11 +167,21 @@ const PlatformPickerModel = ({
         </div>
 
         {/* Footer */}
-        <div className="border-t border-slate-100 px-6 py-4 bg-slate-50">
-          <p className="text-xs text-slate-500 text-center">
+        <div
+          className="flex items-center justify-center gap-2 px-6 py-4 border-t"
+          style={{ backgroundColor: "#f5f8ff", borderColor: "#e4eaf6" }}
+        >
+          <div
+            className="w-4 h-4 rounded-full flex items-center justify-center"
+            style={{ backgroundColor: "#eef2fb" }}
+          >
+            <CheckCircleIcon className="w-3 h-3" style={{ color: "#3b72d9" }} />
+          </div>
+          <p className="text-xs" style={{ color: "#8fa0bf" }}>
             Secure OAuth authentication is used to connect your accounts.
           </p>
         </div>
+
       </div>
     </div>
   );
