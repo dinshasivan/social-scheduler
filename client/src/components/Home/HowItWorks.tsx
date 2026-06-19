@@ -1,88 +1,82 @@
-import { ArrowRightIcon, CheckCircleIcon } from "lucide-react";
+import { ArrowDownIcon, CheckCircleIcon } from "lucide-react";
 
 const steps = [
-    {
-        step: "01",
-        title: "Connect Your Accounts",
-        description:
-            "Link your social profiles in seconds. We support Twitter, LinkedIn, Facebook, and Instagram.",
-    },
-    {
-        step: "02",
-        title: "Create or Generate Content",
-        description:
-            "Write your own post or let our AI craft captions, hashtags, and content ideas from a simple prompt.",
-    },
-    {
-        step: "03",
-        title: "Schedule & Publish",
-        description:
-            "Choose your preferred time, select platforms, and let Scheduler publish automatically.",
-    },
+  {
+    step: "01",
+    title: "Connect your accounts",
+    description:
+      "Link your social profiles in seconds. We support Twitter, LinkedIn, Facebook, and Instagram.",
+  },
+  {
+    step: "02",
+    title: "Create or generate content",
+    description:
+      "Write your own post or let our AI craft captions, hashtags, and content ideas from a simple prompt.",
+  },
+  {
+    step: "03",
+    title: "Schedule & publish",
+    description:
+      "Choose your preferred time, select platforms, and let Scheduler publish automatically.",
+  },
 ];
 
 export default function HowItWorks() {
-    return (
-        <section id="how-it-works" className="py-24 bg-white">
-            <div className="max-w-5xl mx-auto px-4 sm:px-6">
-                {/* Header */}
-                <div className="text-center mb-20">
-                    <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-4 py-2 text-xs font-semibold uppercase tracking-wider text-blue-600">
-                        <CheckCircleIcon className="size-3" />
-                        Simple Setup
-                    </div>
+  return (
+    <section id="how-it-works" className="py-20 bg-white">
+      <div className="max-w-3xl mx-auto px-4 sm:px-6">
 
-                    <h2 className="text-4xl sm:text-5xl font-bold leading-tight text-slate-900">
-                        Up and running in{" "}
-                        <span className="bg-gradient-to-r from-blue-600 to-cyan-500 bg-clip-text text-transparent">
-                            minutes
-                        </span>
-                    </h2>
+        {/* Header */}
+        <div className="text-center mb-12">
+          <div className="inline-flex items-center gap-1.5 bg-[#E6F1FB] border border-[#B5D4F4] text-[#185FA5] text-[11px] font-medium uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-5">
+            <CheckCircleIcon className="size-3" />
+            Simple setup
+          </div>
 
-                    <p className="mt-5 max-w-2xl mx-auto text-lg text-slate-500 leading-relaxed">
-                        No complicated onboarding. No steep learning curve.
-                        Connect your accounts, create content, and start growing
-                        your audience immediately.
-                    </p>
+          <h2 className="text-4xl sm:text-5xl font-medium leading-tight tracking-tight text-slate-900">
+            Up and running in{" "}
+            <span className="text-[#185FA5]">minutes</span>
+          </h2>
+
+          <p className="mt-4 max-w-xl mx-auto text-[15px] text-slate-500 leading-relaxed">
+            No complicated onboarding. No steep learning curve. Connect your
+            accounts, create content, and start growing your audience immediately.
+          </p>
+        </div>
+
+        {/* Steps */}
+        <div className="flex flex-col gap-2">
+          {steps.map((step, index) => (
+            <div
+              key={step.step}
+              className="flex items-center gap-4 rounded-xl border border-slate-200 bg-white px-5 py-4 transition-all duration-200 hover:border-[#B5D4F4]"
+            >
+              {/* Number */}
+              <div className="w-[42px] h-[42px] rounded-[9px] bg-[#E6F1FB] flex items-center justify-center text-[13px] font-medium text-[#185FA5] flex-shrink-0">
+                {step.step}
+              </div>
+
+              {/* Text */}
+              <div className="flex-1 min-w-0">
+                <p className="text-[14px] font-medium text-slate-800 mb-1">
+                  {step.title}
+                </p>
+                <p className="text-[13px] text-slate-500 leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
+
+              {/* Arrow — hidden on last step */}
+              {index < steps.length - 1 && (
+                <div className="w-7 h-7 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0">
+                  <ArrowDownIcon className="size-3.5 text-slate-400" />
                 </div>
-
-                {/* Steps */}
-                <div className="space-y-8">
-                    {steps.map((step, index) => (
-                        <div
-                            key={step.step}
-                            className="group rounded-3xl border border-slate-200 bg-white p-8 shadow-sm transition-all duration-300 hover:border-blue-200 hover:shadow-xl"
-                        >
-                            <div className="flex flex-col gap-6 md:flex-row md:items-center">
-                                {/* Step Number */}
-                                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 font-bold text-lg">
-                                    {step.step}
-                                </div>
-
-                                {/* Content */}
-                                <div className="flex-1">
-                                    <h3 className="text-xl font-semibold text-slate-900 mb-2">
-                                        {step.title}
-                                    </h3>
-
-                                    <p className="text-slate-500 leading-relaxed">
-                                        {step.description}
-                                    </p>
-                                </div>
-
-                                {/* Arrow */}
-                                {index < steps.length - 1 && (
-                                    <div className="hidden md:flex items-center justify-center">
-                                        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 group-hover:bg-blue-50 transition-colors">
-                                            <ArrowRightIcon className="size-5 text-slate-400 group-hover:text-blue-600 transition-colors" />
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    ))}
-                </div>
+              )}
             </div>
-        </section>
-    );
+          ))}
+        </div>
+
+      </div>
+    </section>
+  );
 }

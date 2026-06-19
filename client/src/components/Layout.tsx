@@ -75,7 +75,7 @@ const Layout = () => {
             </button>
 
             {/* User Avatar */}
-            <div className="h-10 w-10 rounded-full bg-gradient-to-r from-blue-600 to-cyan-500 flex items-center justify-center text-white font-semibold shadow-md">
+            <div className="h-10 w-10 rounded-full bg-[#185FA5] flex items-center justify-center text-white font-semibold shadow-md">
               D
             </div>
           </div>
