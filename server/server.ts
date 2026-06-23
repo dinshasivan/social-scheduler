@@ -1,9 +1,12 @@
-import "dotenv/config";
+import dotenv from "dotenv"
+dotenv.config();
 import express, { NextFunction, Request, Response } from 'express';
 import cors from "cors";
 import connectDB from "./config/db.js";
 import authRouter from "./routes/authRouter.js";
 import socialAuthRouter from "./routes/socialAuthRouter.js";
+import accountRouter from "./routes/accountRouter.js";
+import postRouter from "./routes/postRouter.js";
 
 const app = express();
 
@@ -23,6 +26,8 @@ app.get('/', (_req: Request, res: Response) => {
 
 app.use("/api/auth", authRouter)
 app.use("/api/oauth", socialAuthRouter)
+app.use("/api/accounts", accountRouter)
+app.use("/api/posts", postRouter)
 
 //global error handler
 app.use((err: any, _req: Request, res: Response, _next: NextFunction)=>{
