@@ -1,5 +1,4 @@
-import dotenv from "dotenv"
-dotenv.config();
+import "./config/env.js"; 
 import express, { NextFunction, Request, Response } from 'express';
 import cors from "cors";
 import connectDB from "./config/db.js";
