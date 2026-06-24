@@ -135,36 +135,81 @@ export const schedulePost = async (req: AuthRequest, res: Response): Promise<voi
             res.status(401).json({ message: "Unauthorized" });
             return;
         }
-
-        const { generationId, platforms, schedulerFor } = req.body;
-
-        if (!generationId || !Array.isArray(platforms) || platforms.length === 0 || !schedulerFor) {
-            res.status(400).json({
-                message: "generationId, a non-empty platforms array, and schedulerFor are required",
-            });
+ 
+        const { generationId, content: rawContent, platforms: rawPlatforms, schedulerFor: schedulerForBody, scheduledFor } = req.body;
+ 
+        // FormData (multipart, used when a file is attached) can't carry real arrays,
+        // so the client sends platforms as a JSON string in that case — handle both.
+        let platforms: string[];
+        try {
+            platforms = typeof rawPlatforms === "string" ? JSON.parse(rawPlatforms) : rawPlatforms;
+        } catch {
+            res.status(400).json({ message: "platforms must be a JSON array of platform strings" });
             return;
         }
-
-        // Pull content/mediaUrl from the source generation rather than trusting the client to send it.
-        const generation = await Generation.findOne({ _id: generationId, user: userId });
-        if (!generation) {
-            res.status(404).json({ message: "Generation not found, or it doesn't belong to you" });
+ 
+        const scheduleDateRaw = schedulerForBody || scheduledFor;
+ 
+        if (!Array.isArray(platforms) || platforms.length === 0 || !scheduleDateRaw) {
+            res.status(400).json({ message: "platforms (non-empty array) and a schedule date/time are required" });
             return;
         }
-
+ 
+        const parsedDate = new Date(scheduleDateRaw);
+        if (isNaN(parsedDate.getTime())) {
+            res.status(400).json({ message: "Could not parse the scheduled date/time" });
+            return;
+        }
+ 
+        let content = rawContent;
+        let mediaUrl: string | undefined;
+        let mediaType: "image" | "video" | undefined;
+        let generationRef: any;
+ 
+        if (generationId) {
+            // Flow 1: scheduling an existing AI-generated draft.
+            const generation = await Generation.findOne({ _id: generationId, user: userId });
+            if (!generation) {
+                res.status(404).json({ message: "Generation not found, or it doesn't belong to you" });
+                return;
+            }
+            content = generation.content;
+            mediaUrl = generation.mediaUrl;
+            mediaType = generation.mediaType as "image" | "video" | undefined;
+            generationRef = generation._id;
+        } else {
+            // Flow 2: manual compose — content typed directly, optional file upload.
+            if (!content) {
+                res.status(400).json({ message: "content is required when not scheduling from a generation" });
+                return;
+            }
+ 
+            if (req.file) {
+                const isVideo = req.file.mimetype.startsWith("video/");
+                const uploaded = await uploadBufferToCloudinary(
+                    req.file.buffer,
+                    "scheduled-posts",
+                    isVideo ? "video" : "image"
+                );
+                mediaUrl = uploaded.url;
+                mediaType = isVideo ? "video" : "image";
+            }
+        }
+ 
         const post = await Post.create({
             user: userId,
-            content: generation.content,
-            mediaUrl: generation.mediaUrl,
-            mediaType: generation.mediaType,
+            content,
+            mediaUrl,
+            mediaType,
             platforms,
-            generation: generation._id,
-            schedulerFor: new Date(schedulerFor),
+            generation: generationRef,
+            schedulerFor: parsedDate,
             status: "scheduled",
         });
-
+ 
         res.status(201).json(post);
     } catch (error: any) {
         res.status(500).json({ message: error?.message || "Server error" });
     }
 };
+ 
