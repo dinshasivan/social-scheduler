@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { MailIcon, LockIcon, ArrowRightIcon, User2Icon, CalendarIcon } from "lucide-react";
+import { MailIcon, LockIcon, ArrowRightIcon, User2Icon } from "lucide-react";
+import api from "../services/api"; // adjust path to wherever you put api.ts
+import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
     const [isLogin, setIsLogin] = useState(true);
@@ -8,15 +10,49 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState("");
     const navigate = useNavigate();
+    const [success, setSuccess] = useState("");
+
+    const { login } = useAuth();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        setError("");
+        setSuccess("");
         setLoading(true);
-        setTimeout(() => {
+
+        try {
+            const endpoint = isLogin ? "/auth/login" : "/auth/register";
+            const payload = isLogin
+                ? { email, password }
+                : { name, email, password };
+
+            const { data } = await api.post(endpoint, payload);
+
+            if (isLogin) {
+                // Real login — store the session and go to dashboard
+                login(
+                    { id: data._id, name: data.name, email: data.email },
+                    data.token
+                );
+                navigate("/dashboard");
+            } else {
+
+                setIsLogin(true);
+                setPassword("");
+                setName("");
+                setError("");
+                setSuccess("Account created! Please sign in.");
+            }
+        } catch (err: any) {
+            setError(
+                err.response?.data?.message ||
+                "Something went wrong. Please try again."
+            );
+        } finally {
             setLoading(false);
-            navigate("/dashboard");
-        }, 1000);
+        }
     };
 
     return (
@@ -38,6 +74,18 @@ export default function Login() {
                             {isLogin ? "Sign in to your dashboard" : "Create your free account"}
                         </p>
                     </div>
+
+                    {/* Error message */}
+                    {error && (
+                        <div className="mb-4 px-3 py-2 rounded-lg bg-red-50 border border-red-200 text-[13px] text-red-600">
+                            {error}
+                        </div>
+                    )}
+                    {success && (
+                        <div className="mb-4 px-3 py-2 rounded-lg bg-green-50 border border-green-200 text-[13px] text-green-600">
+                            {success}
+                        </div>
+                    )}
 
                     {/* Form */}
                     <form onSubmit={handleSubmit} className="flex flex-col gap-4">
@@ -116,7 +164,11 @@ export default function Login() {
                     <p className="mt-5 text-center text-[13px] text-slate-400">
                         {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
                         <button
-                            onClick={() => setIsLogin(!isLogin)}
+                            onClick={() => {
+                                setIsLogin(!isLogin);
+                                setError("");
+                                setSuccess("");
+                            }}
                             className="text-[#378ADD] hover:text-[#185FA5] font-medium transition-colors"
                         >
                             {isLogin ? "Create one free" : "Sign in"}
