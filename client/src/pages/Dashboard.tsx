@@ -2,14 +2,18 @@ import {
   CheckCircleIcon,
   ClockIcon,
   Share2Icon,
-  PlusIcon,
-  CalendarIcon,
-  Wand2Icon,
   ActivityIcon,
   SendIcon,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-import { dummyAccountsData, dummyActivityData, dummyPostsData } from "../assets/assets";
+import api from "../services/api"; 
+
+interface Activity {
+  _id: string;
+  description: string;
+  date?: string;
+  createdAt: string;
+}
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
@@ -17,25 +21,23 @@ const Dashboard = () => {
     published: 0,
     connectedAccounts: 0,
   });
-  const [activities, setActivities] = useState<any[]>([]);
+  const [activities, setActivities] = useState<Activity[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
-        const [postRes, accountsRes, activityRes] = [
-          { data: dummyPostsData },
-          { data: dummyAccountsData },
-          { data: dummyActivityData },
-        ];
-        const posts = postRes.data;
-        setStats({
-          scheduled: posts.filter((p: any) => p.status === "scheduled").length,
-          published: posts.filter((p: any) => p.status === "published").length,
-          connectedAccounts: accountsRes.data.filter((a: any) => a.status === "connected").length,
-        });
-        setActivities(activityRes.data);
-      } catch (error: any) {
-        console.error("Error fetching dashboard data:", error);
+        const { data } = await api.get("/dashboard");
+        setStats(data.stats);
+        setActivities(data.activities);
+      } catch (err: any) {
+        console.error("Error fetching dashboard data:", err);
+        setError(
+          err.response?.data?.message || "Failed to load dashboard data"
+        );
+      } finally {
+        setLoading(false);
       }
     };
     fetchDashboardData();
@@ -48,8 +50,6 @@ const Dashboard = () => {
       icon: ClockIcon,
       iconBg: "#eef2fb",
       iconColor: "#3b72d9",
-      trendColor: "#3b72d9",
-      trend: "+2 today",
     },
     {
       label: "Published Posts",
@@ -57,8 +57,6 @@ const Dashboard = () => {
       icon: CheckCircleIcon,
       iconBg: "#eafaf3",
       iconColor: "#0f6e56",
-      trendColor: "#0f6e56",
-      trend: "+15 this week",
     },
     {
       label: "Connected Accounts",
@@ -66,10 +64,16 @@ const Dashboard = () => {
       icon: Share2Icon,
       iconBg: "#eef2fb",
       iconColor: "#1e3a7a",
-      trendColor: "#3b72d9",
-      trend: "All active",
     },
   ];
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-24">
+        <p className="text-sm text-slate-400">Loading dashboard…</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
@@ -79,7 +83,6 @@ const Dashboard = () => {
         className="rounded-2xl p-8 text-white relative overflow-hidden"
         style={{ background: "linear-gradient(135deg, #0f1e3d 0%, #1e3a7a 50%, #3b72d9 100%)" }}
       >
-        {/* Subtle background orbs */}
         <div
           className="absolute top-0 right-0 w-72 h-72 rounded-full opacity-10 pointer-events-none"
           style={{ background: "radial-gradient(circle, #ffffff 0%, transparent 70%)", transform: "translate(30%, -30%)" }}
@@ -91,39 +94,19 @@ const Dashboard = () => {
 
         <div className="relative">
           <h1 className="text-2xl font-medium text-white mb-1">
-            Welcome back, Dinsha 👋
+            Welcome back 👋
           </h1>
           <p className="text-sm max-w-xl" style={{ color: "rgba(255,255,255,0.6)" }}>
             Manage, schedule, and automate your social media content from one professional dashboard.
           </p>
-
-          <div className="mt-6 flex flex-wrap gap-3">
-            <button
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-opacity"
-              style={{ backgroundColor: "#ffffff", color: "#0f1e3d" }}
-              onMouseEnter={(e) => { e.currentTarget.style.opacity = "0.9"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.opacity = "1"; }}
-            >
-              <PlusIcon size={16} />
-              Create Post
-            </button>
-
-            <button
-              className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all"
-              style={{
-                backgroundColor: "rgba(255,255,255,0.1)",
-                border: "1.5px solid rgba(255,255,255,0.2)",
-                color: "#ffffff",
-              }}
-              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.18)"; }}
-              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "rgba(255,255,255,0.1)"; }}
-            >
-              <CalendarIcon size={16} />
-              Schedule
-            </button>
-          </div>
         </div>
       </div>
+
+      {error && (
+        <div className="px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-sm text-red-600">
+          {error}
+        </div>
+      )}
 
       {/* ── Stats Cards ── */}
       <div className="grid gap-4 md:grid-cols-3">
@@ -149,17 +132,6 @@ const Dashboard = () => {
                 <h2 className="mt-2 text-3xl font-medium" style={{ color: "#0f1e3d" }}>
                   {card.value}
                 </h2>
-                <div className="mt-2 flex items-center gap-1.5">
-                  <span
-                    className="text-xs font-semibold px-2 py-0.5 rounded-full"
-                    style={{
-                      backgroundColor: card.iconBg,
-                      color: card.trendColor,
-                    }}
-                  >
-                    {card.trend}
-                  </span>
-                </div>
               </div>
 
               <div
@@ -178,7 +150,6 @@ const Dashboard = () => {
         className="bg-white rounded-2xl border overflow-hidden"
         style={{ borderColor: "#e4eaf6", boxShadow: "0 2px 12px rgba(30,58,122,0.05)" }}
       >
-        {/* Feed header */}
         <div
           className="flex items-center justify-between px-6 py-5 border-b"
           style={{ borderColor: "#e4eaf6" }}
@@ -202,7 +173,6 @@ const Dashboard = () => {
           </span>
         </div>
 
-        {/* Empty state */}
         {activities.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-16 px-6 text-center">
             <div
@@ -227,7 +197,6 @@ const Dashboard = () => {
                 onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#f5f8ff"; }}
                 onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "transparent"; }}
               >
-                {/* Icon */}
                 <div
                   className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 mt-0.5"
                   style={{ backgroundColor: "#eef2fb", border: "1.5px solid #dce6f9" }}
@@ -235,7 +204,6 @@ const Dashboard = () => {
                   <SendIcon className="w-4 h-4" style={{ color: "#3b72d9" }} />
                 </div>
 
-                {/* Content */}
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-3 mb-1">
                     <span
