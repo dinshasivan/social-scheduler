@@ -5,7 +5,8 @@ import {
   UserIcon,
   Wand2Icon,
 } from "lucide-react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext"; 
 
 const Sidebar = ({
   isOpen,
@@ -14,10 +15,9 @@ const Sidebar = ({
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }) => {
-  const { logout, user } = {
-    logout: () => { window.location.href = "/"; },
-    user: { name: "Dinsha Sivan", email: "dinsha@example.com" },
-  };
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const navItems = [
     { name: "Dashboard", path: "/dashboard", icon: LayoutDashboardIcon },
@@ -26,7 +26,11 @@ const Sidebar = ({
     { name: "AI Composer", path: "/ai-composer", icon: Wand2Icon },
   ];
 
-  const location = useLocation();
+  const handleLogout = () => {
+    logout();
+    setIsOpen(false);
+    navigate("/");
+  };
 
   return (
     <div
@@ -94,7 +98,7 @@ const Sidebar = ({
       <div className="flex-shrink-0 p-3 border-t border-[#1e2d45] bg-[#090f1a] flex flex-col gap-1.5">
         <div className="flex items-center gap-2.5 p-2.5 rounded-[9px] bg-[#0f1e35] border border-[#1e2d45]">
           <div className="w-[34px] h-[34px] rounded-full bg-[#185FA5] flex items-center justify-center text-[13px] font-medium text-[#85b7eb] flex-shrink-0">
-            {user?.name?.charAt(0).toUpperCase() ?? "U"}
+            {user?.name?.trim() ? user.name.trim().charAt(0).toUpperCase() : "U"}
           </div>
           <div className="flex-1 min-w-0">
             <p className="text-[13px] font-medium text-[#c8d8f0] truncate">{user?.name}</p>
@@ -103,8 +107,9 @@ const Sidebar = ({
         </div>
 
         <button
-          onClick={logout}
-          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[9px] bg-[#0f1e35] border border-[#1e2d45] text-[13px] font-medium text-[#4a6080] hover:bg-[#131f30] hover:text-[#85b7eb] transition-all duration-200"
+          onClick={handleLogout}
+          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[9px] bg-[#0f1e35] border 
+          border-[#1e2d45] text-[13px] font-medium text-[#4a6080] hover:bg-[#131f30] hover:text-[#85b7eb] transition-all duration-200"
         >
           <LogOutIcon className="size-3.5" />
           Sign out
