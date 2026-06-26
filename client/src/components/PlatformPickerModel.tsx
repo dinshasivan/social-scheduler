@@ -1,5 +1,5 @@
 import { CheckCircleIcon, ExternalLinkIcon, XIcon } from "lucide-react";
-import { PLATFORMS } from "../assets/assets";
+import { PLATFORMS } from "../Assets";
 
 interface PlatformPickerModelProps {
   connectedIds: string[];
@@ -23,7 +23,6 @@ const PlatformPickerModel = ({
         className="w-full max-w-lg overflow-hidden rounded-2xl bg-white animate-in fade-in zoom-in-95 duration-200"
         style={{ boxShadow: "0 24px 64px rgba(30, 58, 122, 0.18)", border: "1.5px solid #dce6f9" }}
       >
-
         {/* Header */}
         <div
           className="flex items-center justify-between px-6 py-5 border-b"
@@ -77,7 +76,7 @@ const PlatformPickerModel = ({
                 className="group relative w-full flex items-center gap-4 rounded-xl border p-4 text-left transition-all duration-200 overflow-hidden"
                 style={
                   isConnected
-                    ? { backgroundColor: "#eafaf3", borderColor: "#9fe1cb", opacity: 1 }
+                    ? { backgroundColor: "#eafaf3", borderColor: "#9fe1cb" }
                     : isConnecting
                     ? { backgroundColor: "#f5f8ff", borderColor: "#3b72d9", opacity: 0.75 }
                     : { backgroundColor: "#ffffff", borderColor: "#e4eaf6" }
@@ -107,7 +106,7 @@ const PlatformPickerModel = ({
 
                 {/* Platform icon */}
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0 transition-colors"
+                  className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
                   style={
                     isConnected
                       ? { backgroundColor: "#d1f5e8", border: "1.5px solid #9fe1cb" }
@@ -133,7 +132,7 @@ const PlatformPickerModel = ({
                   </p>
                 </div>
 
-                {/* Right status indicator */}
+                {/* Right status */}
                 {isConnected && (
                   <div
                     className="flex items-center gap-1.5 px-2.5 py-1 rounded-full shrink-0"
@@ -148,14 +147,14 @@ const PlatformPickerModel = ({
 
                 {isConnecting && (
                   <div
-                    className="w-5 h-5 rounded-full border-2 border-t-transparent animate-spin shrink-0"
+                    className="w-5 h-5 rounded-full border-2 animate-spin shrink-0"
                     style={{ borderColor: "#3b72d9", borderTopColor: "transparent" }}
                   />
                 )}
 
                 {!isConnected && !isConnecting && (
                   <div
-                    className="w-7 h-7 rounded-lg flex items-center justify-center border shrink-0 transition-all group-hover:border-blue-300"
+                    className="w-7 h-7 rounded-lg flex items-center justify-center border shrink-0"
                     style={{ borderColor: "#e4eaf6", backgroundColor: "#f5f8ff" }}
                   >
                     <ExternalLinkIcon className="w-3.5 h-3.5" style={{ color: "#8fa0bf" }} />
@@ -181,7 +180,6 @@ const PlatformPickerModel = ({
             Secure OAuth authentication is used to connect your accounts.
           </p>
         </div>
-
       </div>
     </div>
   );
