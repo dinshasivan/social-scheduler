@@ -1,5 +1,5 @@
 import { AlertCircleIcon, CheckCircleIcon, PlaneIcon, UnplugIcon } from "lucide-react";
-import { PLATFORMS } from "../assets/assets";
+import { PLATFORMS } from "../Assets";
 
 interface AccountListProps {
   accounts: any[];

@@ -13,7 +13,7 @@ const getOrCreateZernioProfile = async (user: any) => {
         const profiles: any[] = Array.isArray(data) ? data : data?.profiles || data?.data || [];
 
         if (profiles.length > 0) {
-            const pid = profiles[0]._id || profiles[0].id  
+            const pid = profiles[0]._id || profiles[0].id
             await User.findByIdAndUpdate(user._id, { zernioProfileId: pid })
             return pid;
         }
@@ -39,48 +39,61 @@ const getOrCreateZernioProfile = async (user: any) => {
 
 
 // Generate OAuth authorization URL
-// GET /api/auth/:platform
+// GET /api/oauth/:platform/url
 export const generateAuthUrl = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const { platform } = req.params;
-        const profileId = await getOrCreateZernioProfile(req.user);  
+        const platform = req.params.platform as string;
+
+        const zernioPlatformMap: { [key: string]: string } = {
+            facebook: "facebook-page",
+            instagram: "instagram",
+            linkedin: "linkedin",
+            twitter: "twitter",
+        };
+
+        const zernioPlatform = zernioPlatformMap[platform] ?? platform;
+        console.log("generateAuthUrl:", platform, "→", zernioPlatform);
+
+        const profileId = await getOrCreateZernioProfile(req.user);
 
         const origin = req.headers.origin;
         const redirectUrl = `${origin}/accounts`;
 
         const result = await zernio.connect.getConnectUrl({
-            path: { platform: platform as any },
+            path: { platform: zernioPlatform as any },
             query: {
                 profileId,
                 redirect_url: redirectUrl
             }
-        })
+        });
 
         const data = result.data as any;
         console.log("getConnectUrl response:", JSON.stringify(data, null, 2));
 
-        const authUrl = data.authUrl
+        const authUrl = data.authUrl;
         if (!authUrl) {
-            throw new Error(`Zernio returned no authUrl. Full response: ${JSON.stringify(data)}`)
+            throw new Error(`Zernio returned no authUrl. Full response: ${JSON.stringify(data)}`);
         }
-        res.json({ url: authUrl })
+        res.json({ url: authUrl });
 
     } catch (error: any) {
-        res.status(500).json({ message: error?.message || "Server error" })
+        res.status(500).json({ message: error?.message || "Server error" });
     }
-}
+};
 
 // Sync connected accounts from zernio into mongodb
 // GET /api/auth/sync
 export const syncAccounts = async (req: AuthRequest, res: Response): Promise<void> => {
     try {
-        const profileId = await getOrCreateZernioProfile(req.user);  
+        const profileId = await getOrCreateZernioProfile(req.user);
+        console.log("syncAccounts userId:", req.user._id);
         const result = await zernio.accounts.listAccounts({
             query: { profileId } as any
         })
 
         const data = result.data as any;
         const zernioAccounts: any[] = data?.accounts || (Array.isArray(data) ? data : []);
+        console.log("Zernio accounts raw:", JSON.stringify(zernioAccounts, null, 2));
         const supportedPlatforms = ["twitter", "linkedin", "facebook", "instagram"];
         const syncedAccounts = [];
 
@@ -99,7 +112,7 @@ export const syncAccounts = async (req: AuthRequest, res: Response): Promise<voi
                 continue;
             }
 
-            const account = await Account.findOneAndUpdate(  
+            const account = await Account.findOneAndUpdate(
                 { zernioAccountId: zid },
                 {
                     user: req.user._id,
@@ -107,9 +120,9 @@ export const syncAccounts = async (req: AuthRequest, res: Response): Promise<voi
                     handle: zAccount.username || zAccount.name || zAccount.handle || "Unknown",
                     zernioAccountId: zid,
                     status: "connected",
-                    avatarUrl: zAccount.avatarUrl || zAccount.picture || zAccount.profile_image_url,  
+                    avatarUrl: zAccount.avatarUrl || zAccount.picture || zAccount.profile_image_url,
                 },
-                { upsert: true, new: true }  
+                { upsert: true, new: true }
             )
             syncedAccounts.push(account)
         }
