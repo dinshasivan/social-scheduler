@@ -7,16 +7,20 @@ import socialAuthRouter from "./routes/socialAuthRouter.js";
 import accountRouter from "./routes/accountRouter.js";
 import postRouter from "./routes/postRouter.js";
 import dashboardRoute from "./routes/dashboardRouter.js";
+import { startPublishJob } from "./utils/publishScheduledPosts.js";
+import notificationRouter from "./routes/notificationRouter.js";
 
 const app = express();
 
 //database connection
 
 await connectDB()
-
+startPublishJob();
 // Middleware
 app.use(cors())
 app.use(express.json());
+
+
 
 const port = process.env.PORT || 3000;
 
@@ -29,6 +33,7 @@ app.use("/api/oauth", socialAuthRouter)
 app.use("/api/accounts", accountRouter)
 app.use("/api/posts", postRouter)
 app.use("/api/dashboard", dashboardRoute)
+app.use("/api/notifications", notificationRouter)
 
 //global error handler
 app.use((err: any, _req: Request, res: Response, _next: NextFunction)=>{

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   CalendarDaysIcon,
   LayoutDashboardIcon,
@@ -6,7 +7,8 @@ import {
   Wand2Icon,
 } from "lucide-react";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
-import { useAuth } from "../context/AuthContext"; 
+import { useAuth } from "../context/AuthContext";
+import LogoutConfirmModal from "./LogoutConfirmModal";
 
 const Sidebar = ({
   isOpen,
@@ -18,6 +20,7 @@ const Sidebar = ({
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
 
   const navItems = [
     { name: "Dashboard", path: "/dashboard", icon: LayoutDashboardIcon },
@@ -26,7 +29,8 @@ const Sidebar = ({
     { name: "AI Composer", path: "/ai-composer", icon: Wand2Icon },
   ];
 
-  const handleLogout = () => {
+  const handleLogoutConfirmed = () => {
+    setShowLogoutModal(false);
     logout();
     setIsOpen(false);
     navigate("/");
@@ -107,7 +111,7 @@ const Sidebar = ({
         </div>
 
         <button
-          onClick={handleLogout}
+          onClick={() => setShowLogoutModal(true)}
           className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[9px] bg-[#0f1e35] border 
           border-[#1e2d45] text-[13px] font-medium text-[#4a6080] hover:bg-[#131f30] hover:text-[#85b7eb] transition-all duration-200"
         >
@@ -115,6 +119,13 @@ const Sidebar = ({
           Sign out
         </button>
       </div>
+
+      {showLogoutModal && (
+        <LogoutConfirmModal
+          onClose={() => setShowLogoutModal(false)}
+          onConfirm={handleLogoutConfirmed}
+        />
+      )}
     </div>
   );
 };

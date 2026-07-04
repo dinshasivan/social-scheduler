@@ -2,40 +2,36 @@ import { Request, Response } from "express";
 import zernio from "../config/zernio.js";
 import { User } from "../models/User.js";
 import { Account } from "../models/Account.js";
+import { Activity } from "../models/Activity.js";
 import { AuthRequest } from "../middleware/authMiddleware.js";
 
 
 // Helper to ensure user has a zernio profile
 const getOrCreateZernioProfile = async (user: any) => {
+
+    if (user.zernioProfileId) {
+        return user.zernioProfileId;
+    }
+
     try {
-        const result = await zernio.profiles.listProfiles()
-        const data = result.data as any;
-        const profiles: any[] = Array.isArray(data) ? data : data?.profiles || data?.data || [];
-
-        if (profiles.length > 0) {
-            const pid = profiles[0]._id || profiles[0].id
-            await User.findByIdAndUpdate(user._id, { zernioProfileId: pid })
-            return pid;
-        }
-
         const createResult = await zernio.profiles.createProfile({
             body: { name: `${user.name || user.email}'s workspace` } as any,
-        })
+        });
         const created = (createResult.data as any)?.profile || createResult.data;
-
         const pid = created?._id || created?.id;
 
         if (!pid) {
-            throw new Error("failed to create Zernio profile - no ID returned")
+            throw new Error("Failed to create Zernio profile - no ID returned");
         }
 
-        await User.findByIdAndUpdate(user._id, { zernioProfileId: pid })
+        await User.findByIdAndUpdate(user._id, { zernioProfileId: pid });
         return pid;
 
     } catch (error: any) {
         console.error("getOrCreateZernioProfile Error:", error);
+        throw error;
     }
-}
+};
 
 
 // Generate OAuth authorization URL
@@ -112,12 +108,18 @@ export const syncAccounts = async (req: AuthRequest, res: Response): Promise<voi
                 continue;
             }
 
+            // Check BEFORE upserting so we know whether this is a brand-new connection
+            const existingAccount = await Account.findOne({ zernioAccountId: zid });
+            const isNewConnection = !existingAccount;
+
+            const handle = zAccount.username || zAccount.name || zAccount.handle || "Unknown";
+
             const account = await Account.findOneAndUpdate(
                 { zernioAccountId: zid },
                 {
                     user: req.user._id,
                     platform: normalizedPlatform,
-                    handle: zAccount.username || zAccount.name || zAccount.handle || "Unknown",
+                    handle,
                     zernioAccountId: zid,
                     status: "connected",
                     avatarUrl: zAccount.avatarUrl || zAccount.picture || zAccount.profile_image_url,
@@ -125,6 +127,15 @@ export const syncAccounts = async (req: AuthRequest, res: Response): Promise<voi
                 { upsert: true, new: true }
             )
             syncedAccounts.push(account)
+
+            // Only log activity for genuinely new connections, not every sync poll
+            if (isNewConnection) {
+                await Activity.create({
+                    user: req.user._id,
+                    type: "account_connected",
+                    description: `Connected ${normalizedPlatform} account (${handle})`,
+                });
+            }
         }
         res.json(syncedAccounts)
     } catch (error: any) {

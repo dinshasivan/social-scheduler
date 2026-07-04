@@ -1,11 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRightIcon, LayoutDashboardIcon, LogOutIcon } from "lucide-react";
-import { useAuth } from "../../context/AuthContext"; // adjust path
+import { useAuth } from "../../context/AuthContext";
+import LogoutConfirmModal from "../LogoutConfirmModal"; // adjust path to match where you saved it
 
 export default function Navbar() {
     const { user, logout } = useAuth();
     const [menuOpen, setMenuOpen] = useState(false);
+    const [showLogoutModal, setShowLogoutModal] = useState(false);
     const menuRef = useRef<HTMLDivElement>(null);
     const navigate = useNavigate();
 
@@ -19,7 +21,8 @@ export default function Navbar() {
         return () => document.removeEventListener("mousedown", handleClickOutside);
     }, []);
 
-    const handleLogout = () => {
+    const handleLogoutConfirmed = () => {
+        setShowLogoutModal(false);
         logout();
         setMenuOpen(false);
         navigate("/");
@@ -81,7 +84,10 @@ export default function Navbar() {
                                     Dashboard
                                 </Link>
                                 <button
-                                    onClick={handleLogout}
+                                    onClick={() => {
+                                        setMenuOpen(false);
+                                        setShowLogoutModal(true);
+                                    }}
                                     className="w-full flex items-center gap-2 px-4 py-2.5 text-[13.5px] text-red-500 hover:bg-red-50 transition-colors"
                                 >
                                     <LogOutIcon className="size-4" />
@@ -109,6 +115,13 @@ export default function Navbar() {
                 )}
 
             </div>
+
+            {showLogoutModal && (
+                <LogoutConfirmModal
+                    onClose={() => setShowLogoutModal(false)}
+                    onConfirm={handleLogoutConfirmed}
+                />
+            )}
         </nav>
     );
 }
