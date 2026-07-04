@@ -7,6 +7,7 @@ import {
   SearchIcon,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext"; 
+import NotificationBell from "./NotificationBell";
 
 const pageTitle: Record<string, string> = {
   "/dashboard": "Dashboard",
@@ -68,17 +69,18 @@ const Layout = () => {
           {/* Right Actions */}
           <div className="flex items-center gap-3">
             {/* Search */}
-            <button className="hidden md:flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 
+            {/* <button className="hidden md:flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 
             text-slate-500 hover:bg-slate-50 transition">
               <SearchIcon className="size-5" />
-            </button>
+            </button> */}
 
             {/* Notifications */}
-            <button className="relative h-10 w-10 flex items-center justify-center rounded-xl border 
+            {/* <button className="relative h-10 w-10 flex items-center justify-center rounded-xl border 
             border-slate-200 text-slate-500 hover:bg-slate-50 transition">
               <BellIcon className="size-5" />
               <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-blue-500" />
-            </button>
+            </button> */}
+            <NotificationBell />
 
             {/* User Avatar */}
             <div className="relative">
@@ -91,8 +93,8 @@ const Layout = () => {
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-auto p-4 sm:p-6 lg:p-8 bg-slate-50">
-          <div className="mx-auto max-w-7xl">
+        <main className="flex-1 overflow-hidden p-2 sm:p-6 lg:p-2 xl:p-6 bg-slate-50">
+          <div className="mx-auto max-w-7xl h-full">
             <Outlet />
           </div>
         </main>
