@@ -7,12 +7,10 @@ import {
   XIcon,
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-
-const API = import.meta.env.VITE_API_URL ?? "";
+import api from "../services/api";
 
 const Scheduler = () => {
   const { user } = useAuth();
-  const token = localStorage.getItem("token");
 
   const [posts, setPosts] = useState<any[]>([]);
   const [content, setContent] = useState("");
@@ -27,11 +25,7 @@ const Scheduler = () => {
   // ─── Fetch posts ──────────────────────────────────────────────────────────
   const fetchPosts = async () => {
     try {
-      const res = await fetch(`${API}/api/posts`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error(`${res.status}`);
-      const data = await res.json();
+      const { data } = await api.get("/posts");
       setPosts(data);
     } catch (err: any) {
       setFetchError("Could not load posts.");
@@ -69,36 +63,28 @@ const Scheduler = () => {
     try {
       const schedulerFor = new Date(`${scheduledDate}T${scheduledTime}`).toISOString();
 
-      let res: Response;
+      let data: any;
 
       if (mediaFile) {
-        // Multipart — platforms must be sent as a JSON string
         const form = new FormData();
         form.append("content", content);
         form.append("platforms", JSON.stringify(selectedPlatforms));
         form.append("schedulerFor", schedulerFor);
         form.append("media", mediaFile);
 
-        res = await fetch(`${API}/api/posts`, {
-          method: "POST",
-          headers: { Authorization: `Bearer ${token}` },
-          body: form,
+        const res = await api.post("/posts", form, {
+          headers: { "Content-Type": "multipart/form-data" },
         });
+        data = res.data;
       } else {
-        res = await fetch(`${API}/api/posts`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ content, platforms: selectedPlatforms, schedulerFor }),
+        const res = await api.post("/posts", {
+          content,
+          platforms: selectedPlatforms,
+          schedulerFor,
         });
+        data = res.data;
       }
 
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message ?? res.status.toString());
-
-      // Optimistically prepend then re-sync from server
       setPosts((prev) => [data, ...prev]);
       setContent("");
       setScheduledDate("");
@@ -106,11 +92,13 @@ const Scheduler = () => {
       setSelectedPlatforms([]);
       setMediaFile(null);
     } catch (err: any) {
-      setSubmitError(err.message ?? "Scheduling failed.");
+      setSubmitError(err.response?.data?.message ?? "Scheduling failed.");
     } finally {
       setLoading(false);
     }
   };
+
+  // ...rest of the JSX is unchanged
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">

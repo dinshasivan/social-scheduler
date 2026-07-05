@@ -5,12 +5,10 @@ import {
   Loader2Icon, TimerIcon, Wand2Icon, XIcon
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
-
-const API = import.meta.env.VITE_API_URL ?? "http://localhost:3000";
+import api from "../services/api";
 
 const AIComposer = () => {
   const { user } = useAuth();
-  const token = localStorage.getItem("token");
 
   const [prompt, setPrompt] = useState("");
   const [tone, setTone] = useState("Professional");
@@ -19,7 +17,6 @@ const AIComposer = () => {
   const [generations, setGenerations] = useState<any[]>([]);
   const [fetchError, setFetchError] = useState("");
 
-  // Scheduling state
   const [activeScheduler, setActiveScheduler] = useState<any | null>(null);
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [scheduledDate, setScheduledDate] = useState("");
@@ -27,14 +24,9 @@ const AIComposer = () => {
   const [scheduling, setScheduling] = useState(false);
   const [scheduleError, setScheduleError] = useState("");
 
-  // ─── Fetch past generations ───────────────────────────────────────────────
   const fetchGenerations = async () => {
     try {
-      const res = await fetch(`${API}/api/posts/generations`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      if (!res.ok) throw new Error(`${res.status}`);
-      const data = await res.json();
+      const { data } = await api.get("/posts/generations");
       setGenerations(data);
     } catch (err: any) {
       setFetchError("Could not load generations.");
@@ -46,32 +38,20 @@ const AIComposer = () => {
     if (user) fetchGenerations();
   }, [user]);
 
-  // ─── Generate post ────────────────────────────────────────────────────────
   const handleGenerate = async () => {
     if (!prompt.trim()) return;
     setLoading(true);
     setFetchError("");
     try {
-      const res = await fetch(`${API}/api/posts/generate`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ prompt, tone, generateImage }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message ?? res.status.toString());
-      // Prepend so the newest appears first
+      const { data } = await api.post("/posts/generate", { prompt, tone, generateImage });
       setGenerations((prev) => [data, ...prev]);
     } catch (err: any) {
-      setFetchError(err.message ?? "Generation failed.");
+      setFetchError(err.response?.data?.message ?? "Generation failed.");
     } finally {
       setLoading(false);
     }
   };
 
-  // ─── Schedule post from a generation ─────────────────────────────────────
   const handleSchedule = async () => {
     if (!selectedPlatforms.length || !scheduledDate || !scheduledTime) {
       setScheduleError("Please select at least one platform and a date/time.");
@@ -82,32 +62,24 @@ const AIComposer = () => {
     try {
       const schedulerFor = new Date(`${scheduledDate}T${scheduledTime}`).toISOString();
 
-      const res = await fetch(`${API}/api/posts`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          generationId: activeScheduler._id,
-          platforms: selectedPlatforms,
-          schedulerFor,
-        }),
+      await api.post("/posts", {
+        generationId: activeScheduler._id,
+        platforms: selectedPlatforms,
+        schedulerFor,
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message ?? res.status.toString());
 
-      // Close modal and reset
       setActiveScheduler(null);
       setSelectedPlatforms([]);
       setScheduledDate("");
       setScheduledTime("");
     } catch (err: any) {
-      setScheduleError(err.message ?? "Scheduling failed.");
+      setScheduleError(err.response?.data?.message ?? "Scheduling failed.");
     } finally {
       setScheduling(false);
     }
   };
+
+  // ...rest of the JSX is unchanged
 
   const tones = ["Professional", "Creative", "Funny", "Minimalist", "Excited"];
 
