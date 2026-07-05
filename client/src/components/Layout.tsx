@@ -1,11 +1,7 @@
 import  { useState } from "react";
 import Sidebar from "./Sidebar";
 import { Outlet, useLocation } from "react-router";
-import {
-  MenuIcon,
-  BellIcon,
-  SearchIcon,
-} from "lucide-react";
+import { MenuIcon} from "lucide-react";
 import { useAuth } from "../context/AuthContext"; 
 import NotificationBell from "./NotificationBell";
 
@@ -68,18 +64,6 @@ const Layout = () => {
 
           {/* Right Actions */}
           <div className="flex items-center gap-3">
-            {/* Search */}
-            {/* <button className="hidden md:flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 
-            text-slate-500 hover:bg-slate-50 transition">
-              <SearchIcon className="size-5" />
-            </button> */}
-
-            {/* Notifications */}
-            {/* <button className="relative h-10 w-10 flex items-center justify-center rounded-xl border 
-            border-slate-200 text-slate-500 hover:bg-slate-50 transition">
-              <BellIcon className="size-5" />
-              <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-blue-500" />
-            </button> */}
             <NotificationBell />
 
             {/* User Avatar */}
