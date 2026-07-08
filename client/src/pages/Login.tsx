@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { MailIcon, LockIcon, ArrowRightIcon, User2Icon } from "lucide-react";
-import api from "../services/api"; // adjust path to wherever you put api.ts
+import { MailIcon, LockIcon, ArrowRightIcon, User2Icon, EyeIcon, EyeOffIcon } from "lucide-react";
+import api from "../services/api";
 import { useAuth } from "../context/AuthContext";
 
 export default function Login() {
@@ -9,6 +9,7 @@ export default function Login() {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
     const navigate = useNavigate();
@@ -133,13 +134,26 @@ export default function Login() {
                             <div className="relative">
                                 <LockIcon className="size-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-300 pointer-events-none" />
                                 <input
-                                    type="password"
+                                    type={showPassword ? "text" : "password"}
                                     required
                                     placeholder="••••••••"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full pl-9 pr-4 py-2.5 text-[13.5px] bg-slate-50 border border-slate-200 rounded-full outline-none focus:border-[#378ADD] focus:ring-2 focus:ring-[#378ADD]/15 transition-all placeholder:text-slate-300"
+                                    className="w-full pl-9 pr-10 py-2.5 text-[13.5px] bg-slate-50 border border-slate-200 rounded-full outline-none focus:border-[#378ADD] focus:ring-2 focus:ring-[#378ADD]/15 transition-all placeholder:text-slate-300"
                                 />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword((prev) => !prev)}
+                                    className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-300 hover:text-slate-500 transition-colors"
+                                    tabIndex={-1}
+                                    aria-label={showPassword ? "Hide password" : "Show password"}
+                                >
+                                    {showPassword ? (
+                                        <EyeOffIcon className="size-4" />
+                                    ) : (
+                                        <EyeIcon className="size-4" />
+                                    )}
+                                </button>
                             </div>
                         </div>
 
@@ -168,6 +182,7 @@ export default function Login() {
                                 setIsLogin(!isLogin);
                                 setError("");
                                 setSuccess("");
+                                setShowPassword(false);
                             }}
                             className="text-[#378ADD] hover:text-[#185FA5] font-medium transition-colors"
                         >
