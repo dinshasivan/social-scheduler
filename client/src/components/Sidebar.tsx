@@ -39,7 +39,7 @@ const Sidebar = ({
   return (
     <div
       className={`
-        fixed inset-y-0 left-0 z-50 w-60
+        fixed inset-y-0 left-0 z-50 w-72
         flex flex-col h-full
         bg-[#0c1220] border-r border-[#1e2d45]
         transform transition-transform duration-300
@@ -51,26 +51,26 @@ const Sidebar = ({
       <Link
         to="/"
         onClick={() => scrollTo(0, 0)}
-        className="flex items-center gap-2.5 shrink-0"
+        className="flex items-center gap-3 shrink-0"
       >
-        <div className="flex items-center gap-2.5 px-5 py-[18px] border-b border-[#1e2d45] flex-shrink-0">
-          <div className="w-8 h-8 rounded-[8px] bg-[#185FA5] flex items-center justify-center flex-shrink-0">
-            <img src="/logo.svg" alt="Logo" className="size-4 brightness-0 invert" />
+        <div className="flex items-center gap-3 px-6 py-5 border-b border-[#1e2d45] flex-shrink-0">
+          <div className="w-10 h-10 rounded-[10px] bg-[#185FA5] flex items-center justify-center flex-shrink-0">
+            <img src="/logo.svg" alt="Logo" className="size-5 brightness-0 invert" />
           </div>
           <div>
-            <p className="text-[14px] font-medium text-[#f0f4ff]">Scheduler</p>
-            <p className="text-[11px] text-[#4a5f7a]">Social media manager</p>
+            <p className="text-[16px] font-medium text-[#f0f4ff]">Scheduler</p>
+            <p className="text-[12px] text-[#4a5f7a]">Social media manager</p>
           </div>
         </div>
       </Link>
 
       {/* Nav label */}
-      <p className="px-5 pt-3.5 pb-1.5 text-[10px] font-medium uppercase tracking-widest text-[#3a5070] flex-shrink-0">
+      <p className="px-6 pt-5 pb-2 text-[11px] font-medium uppercase tracking-widest text-[#3a5070] flex-shrink-0">
         Menu
       </p>
 
       {/* Nav links */}
-      <nav className="flex-1 px-2.5 flex flex-col gap-0.5 overflow-y-auto">
+      <nav className="flex-1 px-3.5 flex flex-col gap-1 overflow-y-auto">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
           return (
@@ -80,18 +80,18 @@ const Sidebar = ({
               end={item.path === "/dashboard"}
               onClick={() => setIsOpen(false)}
               className={`
-                flex items-center gap-2.5 px-3.5 py-2.5 rounded-[9px]
-                text-[13px] font-medium transition-all duration-200
+                flex items-center gap-3 px-4 py-3 rounded-xl
+                text-[15px] font-medium transition-all duration-200
                 ${isActive
                   ? "bg-[#0d2040] text-[#85b7eb] border border-[#185FA533]"
                   : "text-[#6a85a8] hover:bg-[#131f30] hover:text-[#a8c0dc]"
                 }
               `}
             >
-              <item.icon className={`size-4 shrink-0 ${isActive ? "text-[#85b7eb]" : "text-[#4a5f7a]"}`} />
+              <item.icon className={`size-5 shrink-0 ${isActive ? "text-[#85b7eb]" : "text-[#4a5f7a]"}`} />
               <span>{item.name}</span>
               {isActive && (
-                <span className="ml-auto w-1 h-[18px] rounded-full bg-[#378ADD]" />
+                <span className="ml-auto w-1 h-5 rounded-full bg-[#378ADD]" />
               )}
             </NavLink>
           );
@@ -99,23 +99,23 @@ const Sidebar = ({
       </nav>
 
       {/* User + logout */}
-      <div className="flex-shrink-0 p-3 border-t border-[#1e2d45] bg-[#090f1a] flex flex-col gap-1.5">
-        <div className="flex items-center gap-2.5 p-2.5 rounded-[9px] bg-[#0f1e35] border border-[#1e2d45]">
-          <div className="w-[34px] h-[34px] rounded-full bg-[#185FA5] flex items-center justify-center text-[13px] font-medium text-[#85b7eb] flex-shrink-0">
+      <div className="flex-shrink-0 p-4 border-t border-[#1e2d45] bg-[#090f1a] flex flex-col gap-2">
+        <div className="flex items-center gap-3 p-3.5 rounded-xl bg-[#0f1e35] border border-[#1e2d45]">
+          <div className="w-10 h-10 rounded-full bg-[#185FA5] flex items-center justify-center text-[15px] font-medium text-[#85b7eb] flex-shrink-0">
             {user?.name?.trim() ? user.name.trim().charAt(0).toUpperCase() : "U"}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-[13px] font-medium text-[#c8d8f0] truncate">{user?.name}</p>
-            <p className="text-[11px] text-[#3a5070] truncate">{user?.email}</p>
+            <p className="text-[15px] font-medium text-[#c8d8f0] truncate">{user?.name}</p>
+            <p className="text-[12px] text-[#3a5070] truncate">{user?.email}</p>
           </div>
         </div>
 
         <button
           onClick={() => setShowLogoutModal(true)}
-          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-[9px] bg-[#0f1e35] border 
-          border-[#1e2d45] text-[13px] font-medium text-[#4a6080] hover:bg-[#131f30] hover:text-[#85b7eb] transition-all duration-200"
+          className="w-full flex items-center justify-center gap-2.5 py-3 rounded-xl bg-[#0f1e35] border 
+          border-[#1e2d45] text-[15px] font-medium text-[#4a6080] hover:bg-[#131f30] hover:text-[#85b7eb] transition-all duration-200"
         >
-          <LogOutIcon className="size-3.5" />
+          <LogOutIcon className="size-4" />
           Sign out
         </button>
       </div>

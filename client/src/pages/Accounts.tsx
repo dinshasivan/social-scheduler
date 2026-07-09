@@ -111,21 +111,21 @@ const Accounts = () => {
     <div className="space-y-8 w-full">
       {/* Hero Header */}
       <div
-        className="rounded-3xl p-4 text-white shadow-xl"
+        className="rounded-3xl p-8 sm:p-10 text-white shadow-xl"
         style={{ background: "linear-gradient(135deg, #0f1e3d 0%, #1e3a7a 50%, #3b72d9 100%)" }}
       >
-        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-5">
           <div>
-            <h1 className="text-2xl font-bold">Connected Accounts</h1>
-            <p className="mt-2 text-sm text-blue-100 max-w-xl">
+            <h1 className="text-3xl sm:text-4xl font-semibold">Connected Accounts</h1>
+            <p className="mt-3 text-base text-blue-100 max-w-xl">
               Connect and manage all your social media platforms from one place.
             </p>
           </div>
           <button
             onClick={() => setShowPlatformPicker(true)}
-            className="flex items-center gap-2 rounded-xl bg-white text-sm px-4 py-2 text-slate-800 font-semibold hover:bg-slate-100 transition-all w-fit"
+            className="flex items-center gap-2.5 rounded-xl bg-white text-base px-6 py-3 text-slate-800 font-semibold hover:bg-slate-100 transition-all w-fit"
           >
-            <PlusIcon size={14} />
+            <PlusIcon size={18} />
             Connect Account
           </button>
         </div>
@@ -134,11 +134,11 @@ const Accounts = () => {
       {/* Syncing banner */}
       {syncing && (
         <div
-          className="flex items-center gap-3 px-4 py-3 rounded-xl border text-sm font-medium"
+          className="flex items-center gap-3 px-5 py-4 rounded-xl border text-base font-medium"
           style={{ backgroundColor: "#f0f5ff", borderColor: "#c5d0e8", color: "#1e3a7a" }}
         >
           <div
-            className="w-4 h-4 rounded-full border-2 animate-spin shrink-0"
+            className="w-5 h-5 rounded-full border-2 animate-spin shrink-0"
             style={{ borderColor: "#3b72d9", borderTopColor: "transparent" }}
           />
           Syncing your connected account…
@@ -146,110 +146,110 @@ const Accounts = () => {
       )}
 
       {error && (
-        <div className="px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-sm text-red-600">
+        <div className="px-5 py-4 rounded-lg bg-red-50 border border-red-200 text-base text-red-600">
           {error}
         </div>
       )}
 
       {/* Stats */}
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="rounded-2xl bg-white border border-slate-200 p-4 shadow-sm">
+      <div className="grid gap-5 md:grid-cols-3">
+        <div className="rounded-2xl bg-white border border-slate-200 p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-slate-500 text-sm">Connected Platforms</p>
-              <h2 className="text-2xl font-bold text-slate-900 mt-2">
+              <h2 className="text-4xl font-semibold text-slate-900 mt-3">
                 {loadingAccounts ? (
-                  <span className="inline-block h-7 w-8 rounded bg-slate-200 animate-pulse align-middle" />
+                  <span className="inline-block h-9 w-10 rounded bg-slate-200 animate-pulse align-middle" />
                 ) : (
                   accounts.length
                 )}
               </h2>
             </div>
-            <div className="h-10 w-10 rounded-xl bg-blue-100 flex items-center justify-center">
-              <LinkIcon className="text-blue-600" size={16} />
+            <div className="h-14 w-14 rounded-2xl bg-blue-100 flex items-center justify-center">
+              <LinkIcon className="text-blue-600" size={22} />
             </div>
           </div>
         </div>
 
-        <div className="rounded-2xl bg-white border border-slate-200 p-4 shadow-sm">
+        <div className="rounded-2xl bg-white border border-slate-200 p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-slate-500 text-sm">Available Platforms</p>
-              <h2 className="text-2xl font-bold text-slate-900 mt-2">{PLATFORMS.length}</h2>
+              <h2 className="text-4xl font-semibold text-slate-900 mt-3">{PLATFORMS.length}</h2>
             </div>
-            <div className="h-10 w-10 rounded-xl bg-cyan-100 flex items-center justify-center">
-              <ActivityIcon className="text-cyan-600" size={16} />
+            <div className="h-14 w-14 rounded-2xl bg-cyan-100 flex items-center justify-center">
+              <ActivityIcon className="text-cyan-600" size={22} />
             </div>
           </div>
         </div>
 
-        <div className="rounded-2xl bg-white border border-slate-200 p-4 shadow-sm">
+        <div className="rounded-2xl bg-white border border-slate-200 p-6 shadow-sm">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-slate-500 text-sm">Active Accounts</p>
-              <h2 className="text-2xl font-bold text-slate-900 mt-2">
+              <h2 className="text-4xl font-semibold text-slate-900 mt-3">
                 {loadingAccounts ? (
-                  <span className="inline-block h-7 w-8 rounded bg-slate-200 animate-pulse align-middle" />
+                  <span className="inline-block h-9 w-10 rounded bg-slate-200 animate-pulse align-middle" />
                 ) : (
                   accounts.length
                 )}
               </h2>
             </div>
-            <div className="h-10 w-10 rounded-xl bg-emerald-100 flex items-center justify-center">
-              <CheckCircleIcon className="text-emerald-600" size={16} />
+            <div className="h-14 w-14 rounded-2xl bg-emerald-100 flex items-center justify-center">
+              <CheckCircleIcon className="text-emerald-600" size={22} />
             </div>
           </div>
         </div>
       </div>
 
       {/* Account List Section */}
-      <div className="rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden h-[360px]">
-        <div className="px-5 py-4 border-b border-slate-100">
-          <h3 className="text-lg font-semibold text-slate-900">Social Accounts</h3>
-          <p className="text-sm text-slate-500 mt-1">
+      <div className="rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden h-[420px]">
+        <div className="px-7 py-6 border-b border-slate-100">
+          <h3 className="text-xl font-semibold text-slate-900">Social Accounts</h3>
+          <p className="text-base text-slate-500 mt-1.5">
             {loadingAccounts
               ? "Checking your connected platforms…"
               : `${accounts.length} of ${PLATFORMS.length} platforms connected`}
           </p>
         </div>
-        <div className="p-4">
+        <div className="p-5">
           {loadingAccounts ? (
             // Loading skeleton
-            <div className="space-y-3">
+            <div className="space-y-4">
               {[...Array(3)].map((_, i) => (
                 <div
                   key={i}
-                  className="flex items-center gap-4 p-4 rounded-xl border border-slate-100 animate-pulse"
+                  className="flex items-center gap-4 p-5 rounded-xl border border-slate-100 animate-pulse"
                 >
-                  <div className="h-10 w-10 rounded-full bg-slate-200 shrink-0" />
-                  <div className="flex-1 space-y-2">
-                    <div className="h-3 w-1/3 rounded bg-slate-200" />
-                    <div className="h-2.5 w-1/4 rounded bg-slate-100" />
+                  <div className="h-12 w-12 rounded-full bg-slate-200 shrink-0" />
+                  <div className="flex-1 space-y-2.5">
+                    <div className="h-3.5 w-1/3 rounded bg-slate-200" />
+                    <div className="h-3 w-1/4 rounded bg-slate-100" />
                   </div>
                 </div>
               ))}
             </div>
           ) : accounts.length === 0 ? (
             // Empty state - no accounts connected
-            <div className="flex flex-col items-center justify-center text-center py-2 px-6">
+            <div className="flex flex-col items-center justify-center text-center py-6 px-6">
               <div
-                className="h-14 w-14 rounded-2xl flex items-center justify-center mb-4"
+                className="h-16 w-16 rounded-2xl flex items-center justify-center mb-5"
                 style={{ backgroundColor: "#eaf0fb" }}
               >
-                <UsersIcon size={26} style={{ color: "#3b72d9" }} />
+                <UsersIcon size={30} style={{ color: "#3b72d9" }} />
               </div>
-              <h4 className="text-base font-semibold text-slate-900">
+              <h4 className="text-lg font-semibold text-slate-900">
                 No account connected
               </h4>
-              <p className="text-sm text-slate-500 mt-1 max-w-sm">
+              <p className="text-base text-slate-500 mt-1.5 max-w-sm">
                 Connect a social media platform to start scheduling and publishing posts.
               </p>
               <button
                 onClick={() => setShowPlatformPicker(true)}
-                className="mt-5 flex items-center gap-2 rounded-xl text-sm px-4 py-2 text-white font-semibold transition-all"
+                className="mt-6 flex items-center gap-2.5 rounded-xl text-base px-6 py-3 text-white font-semibold transition-all"
                 style={{ background: "linear-gradient(135deg, #0f1e3d 0%, #3b72d9 100%)" }}
               >
-                <PlusIcon size={14} />
+                <PlusIcon size={18} />
                 Connect Account
               </button>
             </div>
