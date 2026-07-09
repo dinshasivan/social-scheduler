@@ -37,7 +37,7 @@ export default function Hero() {
         </h1>
 
         {/* Description */}
-        <p className="mt-6 text-[15px] text-slate-500 max-w-2xl mx-auto leading-relaxed">
+        <p className="mt-6 text-[20px] text-slate-500 max-w-2xl mx-auto leading-relaxed">
           Create, schedule, and automate content across all your social platforms.
           Generate captions with AI, manage multiple accounts, and grow your audience
           from one powerful dashboard.
@@ -47,7 +47,7 @@ export default function Hero() {
         <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
           <Link
             to="/login"
-            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-[9px] bg-[#185FA5] hover:bg-[#0C447C] text-[#e6f1fb] text-[13.5px] font-medium transition-colors w-full sm:w-auto"
+            className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-[9px] bg-[#185FA5] hover:bg-[#0C447C] text-[#e6f1fb] text-[15px] font-medium transition-colors w-full sm:w-auto"
           >
             Start for free
             <ArrowRightIcon className="size-3.5" />
@@ -55,13 +55,13 @@ export default function Hero() {
 
           <a
             href="#how-it-works"
-            className="inline-flex items-center justify-center px-6 py-3 rounded-[9px] border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 text-[13.5px] font-medium transition-colors w-full sm:w-auto"
+            className="inline-flex items-center justify-center px-6 py-3 rounded-[9px] border border-slate-200 bg-white hover:bg-slate-50 text-slate-600 text-[15px] font-medium transition-colors w-full sm:w-auto"
           >
             See how it works
           </a>
         </div>
 
-        <p className="mt-4 text-[12px] text-slate-400">
+        <p className="mt-4 text-[14px] text-slate-400">
           No credit card required · Free forever plan available
         </p>
       </div>
@@ -88,23 +88,23 @@ export default function Hero() {
                   key={s.label}
                   className="bg-white border border-slate-200 rounded-xl p-4"
                 >
-                  <p className="text-2xl font-medium text-slate-800">{s.val}</p>
-                  <p className="text-[12px] text-slate-400 mt-0.5">{s.label}</p>
+                  <p className="text-3xl font-medium text-slate-800">{s.val}</p>
+                  <p className="text-[14px] text-slate-400 mt-0.5">{s.label}</p>
                 </div>
               ))}
             </div>
 
             {/* Activity feed */}
             <div className="bg-white border border-slate-200 rounded-xl p-4">
-              <p className="text-[10px] font-medium uppercase tracking-widest text-slate-400 mb-3">
+              <p className="text-[13px] font-medium uppercase tracking-widest text-slate-400 mb-3">
                 Recent activity
               </p>
               <div className="flex flex-col divide-y divide-slate-100">
                 {activities.map((a) => (
                   <div key={a.text} className="flex items-center gap-3 py-2.5 first:pt-0 last:pb-0">
                     <span className="w-1.5 h-1.5 rounded-full bg-[#378ADD] flex-shrink-0" />
-                    <span className="flex-1 text-[12.5px] text-slate-600">{a.text}</span>
-                    <span className="text-[11px] text-slate-400 flex-shrink-0">{a.time}</span>
+                    <span className="flex-1 text-[14px] text-slate-600">{a.text}</span>
+                    <span className="text-[13px] text-slate-400 flex-shrink-0">{a.time}</span>
                   </div>
                 ))}
               </div>
