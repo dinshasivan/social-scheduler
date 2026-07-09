@@ -20,26 +20,26 @@ const PlatformPickerModel = ({
       style={{ backgroundColor: "rgba(10, 18, 40, 0.72)" }}
     >
       <div
-        className="w-full max-w-lg overflow-hidden rounded-2xl bg-white animate-in fade-in zoom-in-95 duration-200"
+        className="w-full max-w-xl overflow-hidden rounded-3xl bg-white animate-in fade-in zoom-in-95 duration-200"
         style={{ boxShadow: "0 24px 64px rgba(30, 58, 122, 0.18)", border: "1.5px solid #dce6f9" }}
       >
         {/* Header */}
         <div
-          className="flex items-center justify-between px-6 py-5 border-b"
+          className="flex items-center justify-between px-8 py-6 border-b"
           style={{ background: "linear-gradient(135deg, #f0f5ff 0%, #e8f0fe 100%)", borderColor: "#dce6f9" }}
         >
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-4">
             <div
-              className="w-8 h-8 rounded-lg flex items-center justify-center"
+              className="w-10 h-10 rounded-xl flex items-center justify-center"
               style={{ backgroundColor: "#1e3a7a" }}
             >
-              <ExternalLinkIcon className="w-4 h-4 text-white" />
+              <ExternalLinkIcon className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h3 className="text-base font-medium" style={{ color: "#0f1e3d" }}>
+              <h3 className="text-lg font-medium" style={{ color: "#0f1e3d" }}>
                 Connect Platform
               </h3>
-              <p className="text-xs mt-0.5" style={{ color: "#8fa0bf" }}>
+              <p className="text-sm mt-1" style={{ color: "#8fa0bf" }}>
                 Choose a social media platform to connect
               </p>
             </div>
@@ -47,7 +47,7 @@ const PlatformPickerModel = ({
 
           <button
             onClick={onClose}
-            className="w-8 h-8 rounded-full flex items-center justify-center border transition-all"
+            className="w-9 h-9 rounded-full flex items-center justify-center border transition-all"
             style={{ borderColor: "#c5d0e8", color: "#8fa0bf", backgroundColor: "transparent" }}
             onMouseEnter={(e) => {
               e.currentTarget.style.backgroundColor = "#eef2fb";
@@ -58,12 +58,12 @@ const PlatformPickerModel = ({
               e.currentTarget.style.color = "#8fa0bf";
             }}
           >
-            <XIcon className="w-3.5 h-3.5" />
+            <XIcon className="w-4 h-4" />
           </button>
         </div>
 
         {/* Platform List */}
-        <div className="p-5 space-y-2.5 max-h-[460px] overflow-y-auto">
+        <div className="p-6 space-y-3.5 max-h-[520px] overflow-y-auto">
           {PLATFORMS.map((platform) => {
             const isConnected = connectedIds.includes(platform.id);
             const isConnecting = connecting === platform.id;
@@ -73,7 +73,7 @@ const PlatformPickerModel = ({
                 key={platform.id}
                 disabled={isConnected || isConnecting}
                 onClick={() => onConnect(platform.id)}
-                className="group relative w-full flex items-center gap-4 rounded-xl border p-4 text-left transition-all duration-200 overflow-hidden"
+                className="group relative w-full flex items-center gap-5 rounded-2xl border p-5 text-left transition-all duration-200 overflow-hidden"
                 style={
                   isConnected
                     ? { backgroundColor: "#eafaf3", borderColor: "#9fe1cb" }
@@ -106,7 +106,7 @@ const PlatformPickerModel = ({
 
                 {/* Platform icon */}
                 <div
-                  className="w-11 h-11 rounded-xl flex items-center justify-center shrink-0"
+                  className="w-14 h-14 rounded-2xl flex items-center justify-center shrink-0"
                   style={
                     isConnected
                       ? { backgroundColor: "#d1f5e8", border: "1.5px solid #9fe1cb" }
@@ -114,7 +114,7 @@ const PlatformPickerModel = ({
                   }
                 >
                   <platform.icon
-                    className="w-5 h-5"
+                    className="w-6 h-6"
                     style={{ color: isConnected ? "#0f6e56" : "#3b72d9" }}
                   />
                 </div>
@@ -122,12 +122,12 @@ const PlatformPickerModel = ({
                 {/* Name + description */}
                 <div className="flex-1 min-w-0">
                   <h4
-                    className="text-sm font-medium"
+                    className="text-base font-medium"
                     style={{ color: isConnected ? "#0f6e56" : "#0f1e3d" }}
                   >
                     {platform.name}
                   </h4>
-                  <p className="text-xs mt-0.5 truncate" style={{ color: "#8fa0bf" }}>
+                  <p className="text-sm mt-1 truncate" style={{ color: "#8fa0bf" }}>
                     {isConnected ? "Already connected to this platform" : platform.description}
                   </p>
                 </div>
@@ -135,11 +135,11 @@ const PlatformPickerModel = ({
                 {/* Right status */}
                 {isConnected && (
                   <div
-                    className="flex items-center gap-1.5 px-2.5 py-1 rounded-full shrink-0"
+                    className="flex items-center gap-2 px-3.5 py-1.5 rounded-full shrink-0"
                     style={{ backgroundColor: "#eafaf3", border: "1px solid #9fe1cb" }}
                   >
-                    <CheckCircleIcon className="w-3.5 h-3.5" style={{ color: "#0f6e56" }} />
-                    <span className="text-xs font-semibold" style={{ color: "#0f6e56" }}>
+                    <CheckCircleIcon className="w-4 h-4" style={{ color: "#0f6e56" }} />
+                    <span className="text-sm font-semibold" style={{ color: "#0f6e56" }}>
                       Connected
                     </span>
                   </div>
@@ -147,17 +147,17 @@ const PlatformPickerModel = ({
 
                 {isConnecting && (
                   <div
-                    className="w-5 h-5 rounded-full border-2 animate-spin shrink-0"
+                    className="w-6 h-6 rounded-full border-2 animate-spin shrink-0"
                     style={{ borderColor: "#3b72d9", borderTopColor: "transparent" }}
                   />
                 )}
 
                 {!isConnected && !isConnecting && (
                   <div
-                    className="w-7 h-7 rounded-lg flex items-center justify-center border shrink-0"
+                    className="w-9 h-9 rounded-xl flex items-center justify-center border shrink-0"
                     style={{ borderColor: "#e4eaf6", backgroundColor: "#f5f8ff" }}
                   >
-                    <ExternalLinkIcon className="w-3.5 h-3.5" style={{ color: "#8fa0bf" }} />
+                    <ExternalLinkIcon className="w-4 h-4" style={{ color: "#8fa0bf" }} />
                   </div>
                 )}
               </button>
@@ -167,16 +167,16 @@ const PlatformPickerModel = ({
 
         {/* Footer */}
         <div
-          className="flex items-center justify-center gap-2 px-6 py-4 border-t"
+          className="flex items-center justify-center gap-2.5 px-8 py-5 border-t"
           style={{ backgroundColor: "#f5f8ff", borderColor: "#e4eaf6" }}
         >
           <div
-            className="w-4 h-4 rounded-full flex items-center justify-center"
+            className="w-5 h-5 rounded-full flex items-center justify-center"
             style={{ backgroundColor: "#eef2fb" }}
           >
-            <CheckCircleIcon className="w-3 h-3" style={{ color: "#3b72d9" }} />
+            <CheckCircleIcon className="w-3.5 h-3.5" style={{ color: "#3b72d9" }} />
           </div>
-          <p className="text-xs" style={{ color: "#8fa0bf" }}>
+          <p className="text-sm" style={{ color: "#8fa0bf" }}>
             Secure OAuth authentication is used to connect your accounts.
           </p>
         </div>
