@@ -48,44 +48,44 @@ const features = [
 
 export default function Features() {
   return (
-    <section id="features" className="py-20 bg-white">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+    <section id="features" className="py-28 bg-white">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8">
 
         {/* Header */}
-        <div className="text-center mb-10">
-          <div className="inline-flex items-center gap-1.5 bg-[#E6F1FB] border border-[#B5D4F4] text-[#185FA5] text-[11px] font-medium uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-5">
-            <ZapIcon className="size-3" />
+        <div className="text-center mb-14">
+          <div className="inline-flex items-center gap-2 bg-[#E6F1FB] border border-[#B5D4F4] text-[#185FA5] text-[12px] font-medium uppercase tracking-widest px-4 py-2 rounded-full mb-6">
+            <ZapIcon className="size-3.5" />
             Everything you need
           </div>
 
-          <h2 className="text-4xl sm:text-5xl font-medium leading-tight tracking-tight text-slate-900">
+          <h2 className="text-5xl sm:text-6xl font-medium leading-tight tracking-tight text-slate-900">
             Automate your entire
             <br />
             <span className="text-[#185FA5]">social media workflow</span>
           </h2>
 
-          <p className="mt-4 max-w-2xl mx-auto text-[15px] text-slate-500 leading-relaxed">
+          <p className="mt-5 max-w-2xl mx-auto text-[17px] text-slate-500 leading-relaxed">
             From content creation to scheduling and analytics — Scheduler
             handles everything so you can focus on growing your audience.
           </p>
         </div>
 
         {/* Grid */}
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature) => (
             <div
               key={feature.title}
-              className="rounded-xl border border-slate-200 bg-white p-5 transition-all duration-200 hover:border-[#B5D4F4]"
+              className="rounded-2xl border border-slate-200 bg-white p-7 transition-all duration-200 hover:border-[#B5D4F4]"
             >
-              <div className="mb-4 w-9 h-9 rounded-[9px] bg-[#E6F1FB] flex items-center justify-center">
-                <feature.icon className="size-[18px] text-[#185FA5]" />
+              <div className="mb-5 w-12 h-12 rounded-xl bg-[#E6F1FB] flex items-center justify-center">
+                <feature.icon className="size-6 text-[#185FA5]" />
               </div>
 
-              <h3 className="text-[14px] font-medium text-slate-800 mb-1.5">
+              <h3 className="text-[17px] font-medium text-slate-800 mb-2">
                 {feature.title}
               </h3>
 
-              <p className="text-[13px] leading-relaxed text-slate-500">
+              <p className="text-[15px] leading-relaxed text-slate-500">
                 {feature.description}
               </p>
             </div>

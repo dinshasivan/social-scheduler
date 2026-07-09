@@ -55,32 +55,32 @@ const pricingPlans = [
 
 export default function Pricing() {
   return (
-    <section id="pricing" className="py-20 bg-slate-50">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6">
+    <section id="pricing" className="py-28 bg-slate-50">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8">
 
         {/* Header */}
-        <div className="text-center mb-12">
-          <div className="inline-flex items-center gap-1.5 bg-[#E6F1FB] border border-[#B5D4F4] text-[#185FA5] text-[11px] font-medium uppercase tracking-widest px-3.5 py-1.5 rounded-full mb-5">
-            <CircleCheckBigIcon className="size-3" />
+        <div className="text-center mb-16">
+          <div className="inline-flex items-center gap-2 bg-[#E6F1FB] border border-[#B5D4F4] text-[#185FA5] text-[12px] font-medium uppercase tracking-widest px-4 py-2 rounded-full mb-6">
+            <CircleCheckBigIcon className="size-3.5" />
             Simple pricing
           </div>
 
-          <h2 className="text-4xl sm:text-5xl font-medium leading-tight tracking-tight text-slate-900">
+          <h2 className="text-5xl sm:text-6xl font-medium leading-tight tracking-tight text-slate-900">
             Plans for every stage{" "}
             <span className="text-[#185FA5]">of growth</span>
           </h2>
 
-          <p className="mt-4 max-w-xl mx-auto text-[15px] text-slate-500 leading-relaxed">
+          <p className="mt-5 max-w-xl mx-auto text-[17px] text-slate-500 leading-relaxed">
             Start free and upgrade when you're ready. No hidden fees, cancel anytime.
           </p>
         </div>
 
         {/* Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3 items-start">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-5 items-start">
           {pricingPlans.map((plan) => (
             <div
               key={plan.name}
-              className={`relative flex flex-col gap-5 rounded-xl border p-6 transition-all duration-200
+              className={`relative flex flex-col gap-6 rounded-2xl border p-8 transition-all duration-200
                 ${plan.highlight
                   ? "bg-[#0c1a2e] border-[#185FA5]"
                   : "bg-white border-slate-200 hover:border-[#B5D4F4]"
@@ -88,39 +88,39 @@ export default function Pricing() {
             >
               {/* Popular badge */}
               {plan.highlight && (
-                <div className="absolute left-1/2 -top-[11px] -translate-x-1/2 bg-[#185FA5] text-[#e6f1fb] text-[11px] font-medium px-3 py-0.5 rounded-full whitespace-nowrap">
+                <div className="absolute left-1/2 -top-3.5 -translate-x-1/2 bg-[#185FA5] text-[#e6f1fb] text-[12px] font-medium px-4 py-1 rounded-full whitespace-nowrap">
                   Most popular
                 </div>
               )}
 
               {/* Plan name + price */}
               <div>
-                <p className={`text-[11px] font-medium uppercase tracking-widest mb-1.5 ${plan.highlight ? "text-[#85b7eb]" : "text-[#378ADD]"}`}>
+                <p className={`text-[12px] font-medium uppercase tracking-widest mb-2 ${plan.highlight ? "text-[#85b7eb]" : "text-[#378ADD]"}`}>
                   {plan.name}
                 </p>
-                <div className="flex items-baseline gap-0.5">
-                  <span className={`text-[32px] font-medium ${plan.highlight ? "text-[#f0f4ff]" : "text-slate-900"}`}>
+                <div className="flex items-baseline gap-1">
+                  <span className={`text-[40px] font-medium ${plan.highlight ? "text-[#f0f4ff]" : "text-slate-900"}`}>
                     {plan.price}
                   </span>
                   {plan.period && (
-                    <span className={`text-[13px] ${plan.highlight ? "text-[#4a6080]" : "text-slate-400"}`}>
+                    <span className={`text-[15px] ${plan.highlight ? "text-[#4a6080]" : "text-slate-400"}`}>
                       {plan.period}
                     </span>
                   )}
                 </div>
-                <p className={`mt-1.5 text-[13px] leading-relaxed ${plan.highlight ? "text-[#6a85a8]" : "text-slate-500"}`}>
+                <p className={`mt-2 text-[15px] leading-relaxed ${plan.highlight ? "text-[#6a85a8]" : "text-slate-500"}`}>
                   {plan.description}
                 </p>
               </div>
 
               {/* Features */}
-              <ul className="flex flex-col gap-2">
+              <ul className="flex flex-col gap-3">
                 {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-center gap-2.5">
-                    <div className={`w-[18px] h-[18px] rounded-full flex items-center justify-center flex-shrink-0 ${plan.highlight ? "bg-[#185FA544]" : "bg-[#E6F1FB]"}`}>
-                      <CheckIcon className={`size-2.5 ${plan.highlight ? "text-[#85b7eb]" : "text-[#185FA5]"}`} />
+                  <li key={feature} className="flex items-center gap-3">
+                    <div className={`w-[22px] h-[22px] rounded-full flex items-center justify-center flex-shrink-0 ${plan.highlight ? "bg-[#185FA544]" : "bg-[#E6F1FB]"}`}>
+                      <CheckIcon className={`size-3 ${plan.highlight ? "text-[#85b7eb]" : "text-[#185FA5]"}`} />
                     </div>
-                    <span className={`text-[13px] ${plan.highlight ? "text-[#a8c0dc]" : "text-slate-600"}`}>
+                    <span className={`text-[15px] ${plan.highlight ? "text-[#a8c0dc]" : "text-slate-600"}`}>
                       {feature}
                     </span>
                   </li>
@@ -130,7 +130,7 @@ export default function Pricing() {
               {/* CTA */}
               <Link
                 to="/login"
-                className={`mt-auto block text-center py-2.5 rounded-lg text-[13px] font-medium transition-colors
+                className={`mt-auto block text-center py-3.5 rounded-xl text-[15px] font-medium transition-colors
                   ${plan.ctaStyle === "pro"
                     ? "bg-[#f0f4ff] text-[#185FA5] hover:bg-[#B5D4F4]"
                     : plan.ctaStyle === "outline"
