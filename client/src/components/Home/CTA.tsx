@@ -4,7 +4,7 @@ import { ArrowRightIcon, RocketIcon } from "lucide-react";
 export default function CTA() {
   return (
     <section className="py-28 bg-slate-50">
-      <div className="max-w-8xl mx-auto px-6 sm:px-10">
+      <div className="max-w-7xl mx-auto px-6 sm:px-10">
         <div className="relative overflow-hidden rounded-3xl border border-[#185FA5] bg-[#0c1a2e] p-16 sm:p-20 text-center">
 
           {/* Badge */}

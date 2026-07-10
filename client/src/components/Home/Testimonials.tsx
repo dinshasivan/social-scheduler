@@ -31,7 +31,7 @@ const stats = [
 export default function Testimonials() {
   return (
     <section className="py-28 bg-slate-50">
-      <div className="max-w-8xl mx-auto px-5 sm:px-8">
+      <div className="max-w-7xl mx-auto px-5 sm:px-8">
 
         {/* Header */}
         <div className="text-center mb-14">
