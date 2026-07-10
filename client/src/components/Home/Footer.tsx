@@ -9,7 +9,7 @@ const footerLinks: Record<string, string[]> = {
 export default function Footer() {
   return (
     <footer className="bg-white border-t border-slate-200">
-      <div className="max-w-8xl mx-auto px-7 sm:px-10 py-16">
+      <div className="max-w-7xl mx-auto px-7 sm:px-10 py-16">
 
         {/* Top grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">

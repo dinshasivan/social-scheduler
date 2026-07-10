@@ -32,7 +32,7 @@ export default function Navbar() {
 
     return (
         <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/80">
-            <div className="max-w-8xl mx-auto px-5 sm:px-8 lg:px-10 h-[74px] flex items-center justify-between gap-8">
+            <div className="max-w-7xl mx-auto px-5 sm:px-8 lg:px-10 h-[74px] flex items-center justify-between gap-8">
 
                 <Link
                     to="/"
