@@ -182,7 +182,7 @@ const Dashboard = () => {
 
       {/* ── Activity Feed ── */}
       <div
-        className="bg-white rounded-2xl border flex flex-col max-h-[560px]"
+        className="bg-white rounded-2xl border flex flex-col max-h-[450px]"
         style={{ borderColor: "#e4eaf6", boxShadow: "0 2px 12px rgba(30,58,122,0.05)" }}
       >
         <div
