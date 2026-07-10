@@ -24,8 +24,8 @@ export default function Hero() {
       <div className="relative mx-auto px-5 sm:px-8 pt-10 pb-9 text-center">
 
         {/* Badge */}
-        <div className="inline-flex items-center gap-2 bg-[#E6F1FB] border border-[#B5D4F4] text-[#185FA5] text-[12px] font-medium px-3.5 py-1.5 rounded-full mb-6">
-          <span className="w-1.5 h-1.5 rounded-full bg-[#378ADD]" />
+        <div className="inline-flex items-center gap-2 bg-[#E6F1FB] border border-[#B5D4F4] text-[#185FA5] text-[14px] font-medium px-3.5 py-1.5 rounded-full mb-6">
+          <span className="w-2 h-2 rounded-full bg-[#378ADD]" />
           AI-powered social media automation
         </div>
 
