@@ -203,7 +203,7 @@ const Accounts = () => {
       </div>
 
       {/* Account List Section */}
-      <div className="rounded-2xl bg-white border border-slate-200 shadow-sm overflow-hidden h-[420px]">
+      <div className="rounded-2xl bg-white border border-slate-200 shadow-sm overflow-auto ">
         <div className="px-7 py-6 border-b border-slate-100">
           <h3 className="text-xl font-semibold text-slate-900">Social Accounts</h3>
           <p className="text-base text-slate-500 mt-1.5">

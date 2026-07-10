@@ -77,8 +77,8 @@ const Layout = () => {
         </header>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-hidden p-2 sm:p-6 lg:p-2 xl:p-6 bg-slate-50">
-          <div className="mx-auto max-w-7xl h-full">
+        <main className="flex-1 overflow-auto scrollbar-none p-2 sm:p-6 lg:p-2 xl:p-6 bg-slate-50">
+          <div className="mx-auto max-w-full h-full">
             <Outlet />
           </div>
         </main>

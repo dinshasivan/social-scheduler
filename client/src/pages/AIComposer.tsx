@@ -109,7 +109,7 @@ const AIComposer = () => {
   };
 
   return (
-    <div className="h-full overflow-y-auto scrollbar-none max-w-4xl mx-auto space-y-12 pb-14 animate-in fade-in duration-700">
+    <div className="h-full overflow-y-auto scrollbar-none  mx-auto space-y-12 pb-14 animate-in fade-in duration-700">
 
       {/* ── Input Section ─────────────────────────────────────────────────── */}
       <div className="space-y-8 text-center px-6 py-8 mx-auto max-w-3xl">
