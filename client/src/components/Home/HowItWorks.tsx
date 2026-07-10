@@ -24,7 +24,7 @@ const steps = [
 export default function HowItWorks() {
   return (
     <section id="how-it-works" className="py-28 bg-white">
-      <div className="max-w-3xl mx-auto px-5 sm:px-8">
+      <div className="max-w-6xl mx-auto px-5 sm:px-8">
 
         {/* Header */}
         <div className="text-center mb-16">
@@ -33,12 +33,12 @@ export default function HowItWorks() {
             Simple setup
           </div>
 
-          <h2 className="text-5xl sm:text-6xl font-medium leading-tight tracking-tight text-slate-900">
+          <h2 className="text-5xl sm:text-6xl xl:text-7xl font-medium leading-tight tracking-tight text-slate-900">
             Up and running in{" "}
             <span className="text-[#185FA5]">minutes</span>
           </h2>
 
-          <p className="mt-5 max-w-xl mx-auto text-[17px] text-slate-500 leading-relaxed">
+          <p className="mt-5 max-w-2xl mx-auto text-[17px] text-slate-500 leading-relaxed">
             No complicated onboarding. No steep learning curve. Connect your
             accounts, create content, and start growing your audience immediately.
           </p>
@@ -52,24 +52,24 @@ export default function HowItWorks() {
               className="flex items-center gap-5 rounded-2xl border border-slate-200 bg-white px-7 py-6 transition-all duration-200 hover:border-[#B5D4F4]"
             >
               {/* Number */}
-              <div className="w-14 h-14 rounded-xl bg-[#E6F1FB] flex items-center justify-center text-[15px] font-medium text-[#185FA5] flex-shrink-0">
+              <div className="w-15 h-15 rounded-xl bg-[#E6F1FB] flex items-center justify-center text-[17px] font-medium text-[#185FA5] flex-shrink-0">
                 {step.step}
               </div>
 
               {/* Text */}
               <div className="flex-1 min-w-0">
-                <p className="text-[17px] font-medium text-slate-800 mb-1.5">
+                <p className="text-[19px] font-medium text-slate-800 mb-1.5">
                   {step.title}
                 </p>
-                <p className="text-[15px] text-slate-500 leading-relaxed">
+                <p className="text-[17px] text-slate-500 leading-relaxed">
                   {step.description}
                 </p>
               </div>
 
               {/* Arrow — hidden on last step */}
               {index < steps.length - 1 && (
-                <div className="w-9 h-9 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0">
-                  <ArrowDownIcon className="size-4 text-slate-400" />
+                <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center flex-shrink-0">
+                  <ArrowDownIcon className="size-5 text-slate-400" />
                 </div>
               )}
             </div>
