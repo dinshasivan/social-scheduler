@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { PLATFORMS } from "../assets/assets";
 import {
   ArrowRightIcon, CalendarIcon, ClockIcon, HistoryIcon,
-  Loader2Icon, TimerIcon, Wand2Icon, XIcon
+  Loader2Icon, PlusIcon, TimerIcon, Wand2Icon, XIcon
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
@@ -12,6 +12,9 @@ const AIComposer = () => {
 
   const [prompt, setPrompt] = useState("");
   const [tone, setTone] = useState("Professional");
+  const [tones, setTones] = useState(["Professional", "Creative", "Funny", "Minimalist", "Excited"]);
+  const [addingTone, setAddingTone] = useState(false);
+  const [customTone, setCustomTone] = useState("");
   const [generateImage, setGenerateImage] = useState(true);
   const [loading, setLoading] = useState(false);
   const [generations, setGenerations] = useState<any[]>([]);
@@ -24,12 +27,22 @@ const AIComposer = () => {
   const [scheduling, setScheduling] = useState(false);
   const [scheduleError, setScheduleError] = useState("");
 
+  // Avoid leaking raw backend/server error text to the UI — show a safe,
+  // generic message for server-side failures (5xx) instead.
+  const getErrorMessage = (err: any, fallback: string) => {
+    const status = err?.response?.status;
+    if (status && status >= 500) {
+      return "Something went wrong on our end. Please try again in a moment.";
+    }
+    return err?.response?.data?.message || fallback;
+  };
+
   const fetchGenerations = async () => {
     try {
       const { data } = await api.get("/posts/generations");
       setGenerations(data);
     } catch (err: any) {
-      setFetchError("Could not load generations.");
+      setFetchError(getErrorMessage(err, "Could not load generations."));
       console.error("fetchGenerations error:", err);
     }
   };
@@ -46,7 +59,7 @@ const AIComposer = () => {
       const { data } = await api.post("/posts/generate", { prompt, tone, generateImage });
       setGenerations((prev) => [data, ...prev]);
     } catch (err: any) {
-      setFetchError(err.response?.data?.message ?? "Generation failed.");
+      setFetchError(getErrorMessage(err, "Generation failed."));
     } finally {
       setLoading(false);
     }
@@ -73,7 +86,7 @@ const AIComposer = () => {
       setScheduledDate("");
       setScheduledTime("");
     } catch (err: any) {
-      setScheduleError(err.response?.data?.message ?? "Scheduling failed.");
+      setScheduleError(getErrorMessage(err, "Scheduling failed."));
     } finally {
       setScheduling(false);
     }
@@ -81,7 +94,19 @@ const AIComposer = () => {
 
   // ...rest of the JSX is unchanged
 
-  const tones = ["Professional", "Creative", "Funny", "Minimalist", "Excited"];
+  const handleAddTone = () => {
+    const trimmed = customTone.trim();
+    if (!trimmed) {
+      setAddingTone(false);
+      return;
+    }
+    if (!tones.includes(trimmed)) {
+      setTones((prev) => [...prev, trimmed]);
+    }
+    setTone(trimmed);
+    setCustomTone("");
+    setAddingTone(false);
+  };
 
   return (
     <div className="h-full overflow-y-auto scrollbar-none max-w-4xl mx-auto space-y-12 pb-14 animate-in fade-in duration-700">
@@ -172,7 +197,7 @@ const AIComposer = () => {
         )}
 
         {/* Tone Pills */}
-        <div className="flex flex-wrap justify-center gap-2.5">
+        <div className="flex flex-wrap justify-center items-center gap-2.5">
           {tones.map((t) => (
             <button
               key={t}
@@ -187,6 +212,58 @@ const AIComposer = () => {
               {t}
             </button>
           ))}
+
+          {/* Add custom tone */}
+          {addingTone ? (
+            <div
+              className="flex items-center gap-1.5 pl-4 pr-1.5 py-1.5 rounded-full border"
+              style={{ backgroundColor: "#ffffff", borderColor: "#3b72d9" }}
+            >
+              <input
+                autoFocus
+                type="text"
+                value={customTone}
+                onChange={(e) => setCustomTone(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter") handleAddTone();
+                  if (e.key === "Escape") {
+                    setAddingTone(false);
+                    setCustomTone("");
+                  }
+                }}
+                placeholder="Custom tone…"
+                className="w-32 bg-transparent text-base outline-none placeholder:text-slate-300"
+                style={{ color: "#1e2a4a" }}
+              />
+              <button
+                onClick={handleAddTone}
+                className="w-7 h-7 rounded-full flex items-center justify-center text-white shrink-0 transition-opacity hover:opacity-90"
+                style={{ backgroundColor: "#3b72d9" }}
+                aria-label="Confirm custom tone"
+              >
+                <ArrowRightIcon className="size-3.5" />
+              </button>
+              <button
+                onClick={() => { setAddingTone(false); setCustomTone(""); }}
+                className="w-7 h-7 rounded-full flex items-center justify-center shrink-0 transition-colors"
+                style={{ color: "#8fa0bf" }}
+                aria-label="Cancel"
+              >
+                <XIcon className="size-3.5" />
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={() => setAddingTone(true)}
+              className="w-9 h-9 rounded-full border flex items-center justify-center transition-all duration-150"
+              style={{ backgroundColor: "#ffffff", borderColor: "#c5d0e8", color: "#5a6a8a" }}
+              onMouseEnter={e => { e.currentTarget.style.borderColor = "#3b72d9"; e.currentTarget.style.color = "#3b72d9"; }}
+              onMouseLeave={e => { e.currentTarget.style.borderColor = "#c5d0e8"; e.currentTarget.style.color = "#5a6a8a"; }}
+              aria-label="Add custom tone"
+            >
+              <PlusIcon className="size-4" />
+            </button>
+          )}
         </div>
       </div>
 
